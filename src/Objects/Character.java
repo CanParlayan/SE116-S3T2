@@ -29,6 +29,32 @@ public class Character {
     //to implement: dummy attack method, pick, wield, wear, etc...
     private Weapon heldWeapon;
     private Armor heldArmor;
+
+
+    public void Pick(Item item){
+        if (HasSpaceInInventory(item)) {
+            this.inventory.add(item);
+            System.out.println("Picked " + item.getItemName() + " from the ground.");
+        }
+        else System.out.println("You can't carry any more!");
+    }
+
+    public void Throw(Item item){
+        if (this.inventory.contains(item)){
+            this.inventory.remove(item);
+            System.out.println("Threw " + item.getItemName() + " to the ground.");
+        }
+        else System.out.println("You don't have that in your inventory! If it's in your hand, try storing it.");
+    }
+
+    public boolean HasSpaceInInventory(Item item){ //weight values need to be adjusted
+        double itemweight = item.getWeight();
+        for (Item inventoryitem : this.inventory){
+            itemweight += inventoryitem.getWeight();
+        }
+        return itemweight < this.strength * 15; //15 is arbitrary
+    }
+
     public Character(String charClass) throws InvalidCharClassException {
         this.charClass = charClass;
         switch (charClass) {
