@@ -115,4 +115,12 @@ public class Character {
     public void setVitality(int vitality) {
         this.vitality = vitality;
     }
+
+    public void DisplayStats(){
+        System.out.println("Character class: " + this.charClass);
+        System.out.println("Character strength: " + this.strength);
+        System.out.println("Character vitality: " + this.vitality);
+        System.out.println("Character intelligence: " + this.intelligence);
+        //TBA: held/inventory
+    }
 }
