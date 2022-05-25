@@ -6,37 +6,28 @@ import java.util.List;
 //This class will probably be abstracted from a top class that also abstracts the enemy class
 public class Character {
     //Small initialization note, decided to handle random generation inside this class and not expose it
+    SecureRandom rng = new SecureRandom();
     private String charClass;
     private int strength;
-    SecureRandom rng = new SecureRandom();
 
-    public Weapon getHeldWeapon() {
-        return heldWeapon;
-    }
-
-    public void setHeldWeapon(Weapon heldWeapon) {
-        this.heldWeapon = heldWeapon;
-    }
-
-    public Armor getHeldArmor() {
-        return heldArmor;
-    }
-
-    public void setHeldArmor(Armor heldArmor) {
-        this.heldArmor = heldArmor;
-    }
     private List<Item> inventory = new ArrayList<Item>(); //no limitation because the limit is related to weight
     //to implement: dummy attack method, pick, wield, wear, etc...
     private Weapon heldWeapon;
     private Armor heldArmor;
+    private int intelligence;
+    private int vitality;
+    private Level gameLevel; //will be used to access the level drops without exposing it public, no setter/getters, but a constructor parameter.
 
 
-    public void Pick(Item item){
-        if (HasSpaceInInventory(item)) {
-            this.inventory.add(item);
-            System.out.println("Picked " + item.getItemName() + " from the ground.");
+
+    public void Pick(Item item) {
+        if (this.gameLevel.getLevelDrops().contains(item)) {
+            if (HasSpaceInInventory(item)) {
+                this.inventory.add(item);
+                System.out.println("Picked " + item.getItemName() + " from the ground.");
+            } else System.out.println("You can't carry any more!");
         }
-        else System.out.println("You can't carry any more!");
+        else System.out.println("That item isn't on the ground!");
     }
 
     public void Throw(Item item){
@@ -55,9 +46,10 @@ public class Character {
         return itemweight < this.strength * 15; //15 is arbitrary
     }
 
-    public Character(String charClass) throws InvalidCharClassException {
+    public Character(String charClass, Level gamelevel) throws InvalidCharClassException {
         this.charClass = charClass;
-        switch (charClass) {
+        this.gameLevel = gamelevel;
+        switch (charClass) { //simplified switch clause
             case "Tank" -> {
                 this.strength = rng.nextInt(1, 6);
                 this.vitality = rng.nextInt(6, 11);
@@ -77,12 +69,11 @@ public class Character {
                 System.out.println("Healer created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence);
             }
             default ->
-                    throw new InvalidCharClassException(this.charClass); //very intelligently designed exception designed to catch invalid class names
+                    throw new InvalidCharClassException(this.charClass); //very intelligently designed exception to catch invalid class names
         }
     }
 
-    private int intelligence;
-    private int vitality;
+
 
     public String getCharClass() {
         return charClass;
@@ -115,6 +106,27 @@ public class Character {
     public void setVitality(int vitality) {
         this.vitality = vitality;
     }
+
+    public Weapon getHeldWeapon() {
+        return heldWeapon;
+    }
+
+    public void setHeldWeapon(Weapon heldWeapon) {
+        this.heldWeapon = heldWeapon;
+    }
+
+    public Armor getHeldArmor() {
+        return heldArmor;
+    }
+
+    public void setHeldArmor(Armor heldArmor) {
+        this.heldArmor = heldArmor;
+    }
+
+    public List<Item> getInventory() {
+        return inventory;
+    }
+
 
     public void DisplayStats(){
         System.out.println("Character class: " + this.charClass);
