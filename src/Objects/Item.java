@@ -13,6 +13,10 @@ public abstract class Item {
         this.weight = weight;
     }
 
+    public Item() {
+
+    }
+
     public String getItemName() {
         return itemName;
     }

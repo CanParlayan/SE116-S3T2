@@ -9,6 +9,11 @@ public class Armor extends Item{
         this.armorValue = value;
     }
 
+    public Armor() {
+        super();
+    }
+
+
     public double getArmorValue() {
         return armorValue;
     }
