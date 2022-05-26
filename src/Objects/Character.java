@@ -25,7 +25,8 @@ public class Character {
             if (HasSpaceInInventory(item)) {
                 this.inventory.add(item);
                 System.out.println("Picked " + item.getItemName() + " from the ground.");
-            } else System.out.println("You can't carry any more!");
+            }
+            else System.out.println("You can't carry any more!");
         }
         else System.out.println("That item isn't on the ground!");
     }
@@ -33,9 +34,59 @@ public class Character {
     public void Throw(Item item){
         if (this.inventory.contains(item)){
             this.inventory.remove(item);
+            this.gameLevel.getLevelDrops().add(item);
             System.out.println("Threw " + item.getItemName() + " to the ground.");
         }
         else System.out.println("You don't have that in your inventory! If it's in your hand, try storing it.");
+    }
+
+    public void Wield(Weapon weapon){
+        //A logic operator could be used to simplify the checks here, however we want the program to bias towards
+        //the inventory copy rather than the ground copy if same items exist both on the ground and the inventory.
+        if (weapon.getWeight() < this.strength) {
+            if (this.inventory.contains(weapon)) {
+                if (!(heldWeapon == null)) {
+                    inventory.remove(weapon);
+                    if (HasSpaceInInventory(heldWeapon)) {
+                        inventory.add(heldWeapon);
+                        String oldWeaponName = heldWeapon.getItemName();
+                        this.setHeldWeapon(weapon);
+                        System.out.println("Grabbed " + weapon.getItemName() + " from the inventory and put " + oldWeaponName + " inside instead.");
+                    } else {
+                        String oldWeaponName = heldWeapon.getItemName();
+                        this.gameLevel.AddToLevelDrops(heldWeapon);
+                        this.setHeldWeapon(weapon);
+                        System.out.println("Wielded " + weapon.getItemName() + " and threw " + oldWeaponName + " on the ground because there was no space in inventory.");
+                    }
+                } else {
+                    inventory.remove(weapon);
+                    this.setHeldWeapon(weapon);
+                    System.out.println("Wielded " + weapon.getItemName() + " from the inventory.");
+                }
+
+            } else if (this.gameLevel.getLevelDrops().contains(weapon)) {
+                if (!(heldWeapon == null)) {
+                    this.gameLevel.RemoveFromLevelDrops(weapon);
+                    if (HasSpaceInInventory(heldWeapon)) {
+                        inventory.add(heldWeapon);
+                        String oldWeaponName = heldWeapon.getItemName();
+                        this.setHeldWeapon(weapon);
+                        System.out.println("Grabbed " + weapon.getItemName() + " from the ground and put " + oldWeaponName + " in the inventory.");
+                    } else {
+                        String oldWeaponName = heldWeapon.getItemName();
+                        this.gameLevel.AddToLevelDrops(heldWeapon);
+                        this.setHeldWeapon(weapon);
+                        System.out.println("Wielded " + weapon.getItemName() + " from the ground and threw " + oldWeaponName + " because there was no space in inventory.");
+                    }
+                } else {
+                    this.gameLevel.RemoveFromLevelDrops(weapon);
+                    this.setHeldWeapon(weapon);
+                    System.out.println("Wielded " + weapon.getItemName() + " from the ground.");
+                }
+            }
+        }
+        else System.out.println("That thing is too heavy!");
+
     }
 
     public boolean HasSpaceInInventory(Item item){ //weight values need to be adjusted
@@ -68,11 +119,16 @@ public class Character {
                 this.intelligence = rng.nextInt(6,11);
                 System.out.println("Healer created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence);
             }
+            case "Enemy" -> {
+                this.strength = rng.nextInt(1,6);
+                this.vitality = rng.nextInt(1,6);
+                this.intelligence = rng.nextInt(1,6);
+                //no output because this will be internal
+            }
             default ->
                     throw new InvalidCharClassException(this.charClass); //very intelligently designed exception to catch invalid class names
         }
     }
-
 
 
     public String getCharClass() {
