@@ -40,7 +40,7 @@ public class Character {
         else System.out.println("You don't have that in your inventory! If it's in your hand, try storing it.");
     }
 
-    public void Wield(Weapon weapon){
+    public void Wield(Weapon weapon){ //probably a good idea to cover with exceptions
         //A logic operator could be used to simplify the checks here, however we want the program to bias towards
         //the inventory copy rather than the ground copy if same items exist both on the ground and the inventory.
         if (weapon.getWeight() < this.strength) {
@@ -82,6 +82,55 @@ public class Character {
                     this.gameLevel.RemoveFromLevelDrops(weapon);
                     this.setHeldWeapon(weapon);
                     System.out.println("Wielded " + weapon.getItemName() + " from the ground.");
+                }
+            }
+        }
+        else System.out.println("That thing is too heavy!");
+
+    }
+
+    public void Wear(Armor armor){ //probably a good idea to cover with exceptions
+        //A logic operator could be used to simplify the checks here, however we want the program to bias towards
+        //the inventory copy rather than the ground copy if same items exist both on the ground and the inventory.
+        if (armor.getWeight() < this.strength) {
+            if (this.inventory.contains(armor)) {
+                if (!(heldArmor == null)) {
+                    inventory.remove(armor);
+                    if (HasSpaceInInventory(heldArmor)) {
+                        inventory.add(heldArmor);
+                        String oldArmorName = heldArmor.getItemName();
+                        this.setHeldArmor(armor);
+                        System.out.println("Grabbed " + armor.getItemName() + " from the inventory and put " + oldArmorName + " inside instead.");
+                    } else {
+                        String oldArmorName = heldArmor.getItemName();
+                        this.gameLevel.AddToLevelDrops(heldArmor);
+                        this.setHeldArmor(armor);
+                        System.out.println("Wore " + armor.getItemName() + " and threw " + oldArmorName + " on the ground because there was no space in inventory.");
+                    }
+                } else {
+                    inventory.remove(armor);
+                    this.setHeldArmor(armor);
+                    System.out.println("Wore " + armor.getItemName() + " from the inventory.");
+                }
+
+            } else if (this.gameLevel.getLevelDrops().contains(armor)) {
+                if (!(heldArmor == null)) {
+                    this.gameLevel.RemoveFromLevelDrops(armor);
+                    if (HasSpaceInInventory(heldArmor)) {
+                        inventory.add(heldArmor);
+                        String oldArmorName = heldArmor.getItemName();
+                        this.setHeldArmor(armor);
+                        System.out.println("Grabbed " + armor.getItemName() + " from the ground and put " + oldArmorName + " in the inventory.");
+                    } else {
+                        String oldArmorName = heldArmor.getItemName();
+                        this.gameLevel.AddToLevelDrops(heldArmor);
+                        this.setHeldArmor(armor);
+                        System.out.println("Wore " + armor.getItemName() + " from the ground and threw " + oldArmorName + " because there was no space in inventory.");
+                    }
+                } else {
+                    this.gameLevel.RemoveFromLevelDrops(armor);
+                    this.setHeldArmor(armor);
+                    System.out.println("Wore " + armor.getItemName() + " from the ground.");
                 }
             }
         }
