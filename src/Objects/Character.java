@@ -102,27 +102,27 @@ public class Character {
         this.gameLevel = gamelevel;
         switch (charClass) { //simplified switch clause
             case "Tank" -> {
-                this.strength = rng.nextInt(1, 6);
-                this.vitality = rng.nextInt(6, 11);
-                this.intelligence = rng.nextInt(1, 6);
+                this.strength = rng.nextInt(6)+1;
+                this.vitality = rng.nextInt(6)+6;
+                this.intelligence = rng.nextInt(6)+1;
                 System.out.println("Tank created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence);
             }
             case "Fighter" -> {
-                this.strength = rng.nextInt(6,11);
-                this.vitality = rng.nextInt(3,8);
-                this.intelligence = rng.nextInt(1,6);
+                this.strength = rng.nextInt(6)+6;
+                this.vitality = rng.nextInt(6)+3;
+                this.intelligence = rng.nextInt(6)+1;
                 System.out.println("Fighter created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence);
             }
             case "Healer" -> {
-                this.strength = rng.nextInt(3,8);
-                this.vitality = rng.nextInt(1,6);
-                this.intelligence = rng.nextInt(6,11);
+                this.strength = rng.nextInt(6)+3;
+                this.vitality = rng.nextInt(6)+1;
+                this.intelligence = rng.nextInt(6)+6;
                 System.out.println("Healer created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence);
             }
             case "Enemy" -> {
-                this.strength = rng.nextInt(1,6);
-                this.vitality = rng.nextInt(1,6);
-                this.intelligence = rng.nextInt(1,6);
+                this.strength = rng.nextInt(6)+1;
+                this.vitality = rng.nextInt(6)+1;
+                this.intelligence = rng.nextInt(6)+1;
                 //no output because this will be internal
             }
             default ->
