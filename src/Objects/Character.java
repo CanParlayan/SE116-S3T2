@@ -1,4 +1,6 @@
 package Objects;
+import Items.*;
+
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +11,17 @@ public class Character {
     SecureRandom rng = new SecureRandom();
     private String charClass;
     private int strength;
-
     private List<Item> inventory = new ArrayList<Item>(); //no limitation because the limit is related to weight
     //to implement: dummy attack method, pick, wield, wear, etc...
     private Weapon heldWeapon;
     private Armor heldArmor;
     private int intelligence;
     private int vitality;
+    private int health;
+    private boolean isStunned;
+    private int stunLength;
+    private boolean isDead;
+    private int specialCooldown;
     private Level gameLevel; //will be used to access the level drops without exposing it public, no setter/getters, but a constructor parameter.
 
 
@@ -179,6 +185,60 @@ public class Character {
         }
     }
 
+    public int CalculateDamage(){
+        if (heldWeapon instanceof Sword){
+            return (int) (this.heldWeapon.getDamage()*this.strength);
+        }
+        else if (heldWeapon instanceof Shield){
+            return (int) (this.heldWeapon.getDamage()*this.vitality);
+        }
+        else if (heldWeapon instanceof Wand){
+            return (int) (this.heldWeapon.getDamage()*this.intelligence);
+        }
+        else return this.strength; //unarmed attack
+    }
+
+    public void TakeDamage(int damage){
+        if (heldArmor == null){
+            System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage.");
+            this.setHealth(this.getHealth()-damage);
+            System.out.println("They now have " + this.getHealth() + " HP.");
+            this.CheckDead();
+        }
+
+        else if (heldArmor.getArmorValue() > 0){
+            if (heldArmor.getArmorValue()-damage > 0){
+                heldArmor.setArmorValue(heldArmor.getArmorValue()-damage);
+                System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage but all of it was blocked off by " + this.heldArmor.getItemName() + ".");
+                System.out.println("New armor durability: " + heldArmor.getArmorValue());
+                this.CheckDead();
+            }
+            else if (heldArmor.getArmorValue()-damage >= 0){
+                int takenDamage = (int) Math.abs(this.heldArmor.getArmorValue() - damage);
+                if(takenDamage == 0){
+                    System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage. Their " + heldArmor.getItemName() + " breaks while protecting them from the attack.");
+                    this.heldArmor = null;
+                    this.CheckDead();
+                }
+                else {
+                    System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage. Their " + heldArmor.getItemName() + "breaks.");
+                    System.out.println("They take an extra " + takenDamage + " damage that the armor couldn't block.");
+                    this.heldArmor = null;
+                    this.setHealth(this.getHealth()-takenDamage);
+                    System.out.println("Their HP is now " + this.getHealth());
+                    this.CheckDead();
+                }
+            }
+
+        }
+
+    }
+    public void CheckDead(){
+        if (this.health <=0){
+            System.out.println("Oh no! " + this.getCharClass() + " is dead!");
+            this.isDead = true;
+        }
+}
 
     public String getCharClass() {
         return charClass;
@@ -232,7 +292,45 @@ public class Character {
         return inventory;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
 
+    public void setStunned(boolean stunned) {
+        isStunned = stunned;
+    }
+
+    public void setStunLength(int stunLength) {
+        this.stunLength = stunLength;
+    }
+
+    public void setIsDead(boolean isDead) {
+        this.isDead = isDead;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public boolean isStunned() {
+        return isStunned;
+    }
+
+    public int getStunLength() {
+        return stunLength;
+    }
+
+    public boolean getIsDead() {
+        return isDead;
+    }
+
+    public int getSpecialCooldown() {
+        return specialCooldown;
+    }
+
+    public void setSpecialCooldown(int specialCooldown) {
+        this.specialCooldown = specialCooldown;
+    }
     public void DisplayStats(){
         System.out.println("Character class: " + this.charClass);
         System.out.println("Character strength: " + this.strength);
