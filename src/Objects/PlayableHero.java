@@ -45,11 +45,13 @@ public class PlayableHero {
     public static void setPlayableHeroClass(String playableHeroClass) {
         PlayableHero.playableHeroClass = playableHeroClass;
     }
+}
 
-    public static int getPlayableHeroCurrentDamage() {
+   /* public static int getPlayableHeroCurrentDamage() {
         return playableHeroCurrentDamage;
     }
         public static void setPlayableHeroCurrentDamage(int damage) {
-            playableHeroCurrentDamage = (int)(Weapon.getDamage(damage)* PlayableHero.getIntelligence());
+            playableHeroCurrentDamage = (int)(Weapon.getDamage()* PlayableHero.getIntelligence()); Why are all these static anyway?
+
         }
-    }
+    }*/

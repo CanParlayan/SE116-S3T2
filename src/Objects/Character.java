@@ -11,7 +11,7 @@ public class Character {
     SecureRandom rng = new SecureRandom();
     private String charClass;
     private int strength;
-    private List<Item> inventory = new ArrayList<Item>(); //no limitation because the limit is related to weight
+    private List<Item> inventory = new ArrayList<>(); //no limitation because the limit is related to weight
     //to implement: dummy attack method, pick, wield, wear, etc...
     private Weapon heldWeapon;
     private Armor heldArmor;
@@ -191,13 +191,13 @@ public class Character {
 
     public int CalculateDamage(){
         if (heldWeapon instanceof Sword){
-            return (int) (this.heldWeapon.getDamage()*this.strength);
+            return (this.heldWeapon.getDamage()*this.strength);
         }
         else if (heldWeapon instanceof Shield){
-            return (int) (this.heldWeapon.getDamage()*this.vitality);
+            return (this.heldWeapon.getDamage()*this.vitality);
         }
         else if (heldWeapon instanceof Wand){
-            return (int) (this.heldWeapon.getDamage()*this.intelligence);
+            return (this.heldWeapon.getDamage()*this.intelligence);
         }
         else return this.strength; //unarmed attack
     }

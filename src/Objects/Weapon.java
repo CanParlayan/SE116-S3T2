@@ -1,10 +1,10 @@
 package Objects;
 
 public class Weapon extends Item{
-    private double damage;
+    private int damage;
     private String weaponType;
 
-    public Weapon(Material material,String itemName, double value, double weight,String weaponType,double damage) {
+    public Weapon(Material material, String itemName, double value, double weight, String weaponType, int damage) {
         super(material, itemName,
                 value,
                 weight);
@@ -13,11 +13,7 @@ public class Weapon extends Item{
         setMaterial(material);
     }
 
-    public static double getDamage(double damage) {
-        return damage;
-    }
-
-    public void setDamage(double damage) {
+    public void setDamage(int damage) {
         this.damage = damage;
         }
 
@@ -31,7 +27,7 @@ public class Weapon extends Item{
     public void specialAction(){
     }
 
-    public double getDamage() {
+    public int getDamage() {
         return damage;
     }
 
