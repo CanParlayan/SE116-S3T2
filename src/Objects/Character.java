@@ -12,7 +12,6 @@ public class Character {
     private String charClass;
     private int strength;
     private List<Item> inventory = new ArrayList<>(); //no limitation because the limit is related to weight
-    //to implement: dummy attack method, pick, wield, wear, etc...
     private Weapon heldWeapon;
     private Armor heldArmor;
     private int intelligence;
@@ -340,6 +339,21 @@ public class Character {
         System.out.println("Character strength: " + this.strength);
         System.out.println("Character vitality: " + this.vitality);
         System.out.println("Character intelligence: " + this.intelligence);
+        System.out.println("Character health: " + this.health);
+        if (this.heldArmor == null) System.out.println("Held armor: Unarmored");
+        else {
+            System.out.println("Held armor: " + this.heldArmor.getItemName());
+            System.out.println("Armor material: " + this.heldArmor.getMaterial());
+            System.out.println("Armor value: " + this.heldArmor.getArmorValue());
+            System.out.println("Weight: " + this.heldArmor.getWeight());
+        }
+        if (this.heldWeapon == null) System.out.println("Held weapon: Unarmed");
+        else {
+            System.out.println("Held weapon: " + this.heldWeapon.getItemName());
+            System.out.println("Weapon type: " + this.heldWeapon.getWeaponType());
+            System.out.println("Weapon material: " + this.heldWeapon.getMaterial());
+            System.out.println("Weapon damage: " + this.heldWeapon.getDamage());
+        }
         //TBA: held/inventory
     }
 }

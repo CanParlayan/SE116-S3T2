@@ -2,7 +2,7 @@ package Objects;
 
 public class Armor extends Item{
     private double armorValue;
-
+    private String armorType;
 
     public Armor(Material material, String itemName, double value, double weight, double armorValue) {
         super(material, itemName, value, weight);
@@ -20,5 +20,13 @@ public class Armor extends Item{
 
     public void setArmorValue(double armorValue) {
         this.armorValue = armorValue;
+    }
+
+    public String getArmorType() {
+        return armorType;
+    }
+
+    public void setArmorType(String armorType) {
+        this.armorType = armorType;
     }
 }
