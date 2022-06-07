@@ -160,24 +160,28 @@ public class Character {
                 this.strength = rng.nextInt(6)+1;
                 this.vitality = rng.nextInt(6)+6;
                 this.intelligence = rng.nextInt(6)+1;
-                System.out.println("Tank created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence);
+                this.health = Math.toIntExact(Math.round(this.vitality * 0.7 + this.strength * 0.2 + this.intelligence * 0.1)); //required because Math.round returns long
+                System.out.println("Tank created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence + " HP: " + this.health);
             }
             case "Fighter" -> {
                 this.strength = rng.nextInt(6)+6;
                 this.vitality = rng.nextInt(6)+3;
                 this.intelligence = rng.nextInt(6)+1;
-                System.out.println("Fighter created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence);
+                this.health = Math.toIntExact(Math.round(this.vitality * 0.7 + this.strength * 0.2 + this.intelligence * 0.1));
+                System.out.println("Fighter created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence+ " HP: " + this.health);
             }
             case "Healer" -> {
                 this.strength = rng.nextInt(6)+3;
                 this.vitality = rng.nextInt(6)+1;
                 this.intelligence = rng.nextInt(6)+6;
-                System.out.println("Healer created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence);
+                this.health = Math.toIntExact(Math.round(this.vitality * 0.7 + this.strength * 0.2 + this.intelligence * 0.1));
+                System.out.println("Healer created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence + " HP: " + this.health);
             }
             case "Enemy" -> {
                 this.strength = rng.nextInt(6)+1;
                 this.vitality = rng.nextInt(6)+1;
                 this.intelligence = rng.nextInt(6)+1;
+                this.health = Math.toIntExact(Math.round(this.vitality * 0.7 + this.strength * 0.2 + this.intelligence * 0.1));
                 //no output because this will be internal
             }
             default ->
