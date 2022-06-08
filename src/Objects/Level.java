@@ -36,4 +36,8 @@ public class Level {
     public ArrayList<Item> getLevelDrops() {
         return levelDrops;
     }
+
+    public void EmptyLevelDrops(){
+        this.levelDrops.clear();
+    }
 }
