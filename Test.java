@@ -1,101 +1,83 @@
-import java.security.SecureRandom;
+import Objects.*;
+import Materials.*;
+import Items.*;
+import Objects.Character;
+
+import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Test {
-    public static void main(String[] args) {
-        // ilkel hali //
-        SecureRandom random = new SecureRandom();
-        Scanner input = new Scanner(System.in);
-        int n=0;
-        boolean isRunning=true;
 
-        int lev0cnt=0;
-        int lev1cnt=0;
-        int lev2cnt=0;
-        int lev3cnt=0;
-        int lev4cnt=0;
+    private static final String
+            askUser = "What do you want to do?",
+            welcomeUser = """
 
+                    Welcome to the game.
+                    You can type quit to exit the game.""";
+        Material crystal = new Crystal();
+        Material steel = new Steel();
+        Material mithril = new Mithril();
 
-        Level level0 = new Level();
-        level0.setEnemyCount((int)Math.pow(2,n));
+        Player player = new Player();
+        public int highScore = 0;
+        boolean running = true;
+        Scanner scan = new Scanner(System.in);
+        Random rand = new Random();
+
+        Weapon steelWand = new Wand(steel);
+        Weapon mithrilWand = new Wand(mithril);
+        Weapon crystalWand = new Wand(crystal);
+        Weapon steelSword = new Sword(steel);
+        Weapon mithrilSword = new Sword(mithril);
+        Weapon crystalSword = new Sword(crystal);
+        Weapon steelShield = new Shield(steel);
+        Weapon mithrilShield = new Shield(mithril);
+        Weapon crystalShield = new Shield(crystal);
+        Armor crystalPadded = new Padded(crystal);
+        Armor steelPadded = new Padded(steel);
+        Armor mithrilPadded = new Padded(mithril);
+        Armor crystalChainmail = new Chainmail(crystal);
+        Armor steelChainmail = new Chainmail(steel);
+        Armor mithrilChainmail = new Chainmail(mithril);
+        Armor crystalFullPlate = new FullPlate(crystal);
+        Armor steelFullPlate = new FullPlate(steel);
+        Armor mithrilFullPlate = new FullPlate(mithril);
         Level level1 = new Level();
-        level1.setEnemyCount((int)Math.pow(2,n+1));
-        Level level2 = new Level();
-        level2.setEnemyCount((int)Math.pow(2,n+2));
-        Level level3 = new Level();
-        level3.setEnemyCount((int)Math.pow(2,n+3));
-        Level level4 = new Level();
-        level4.setEnemyCount((int)Math.pow(2,n+4));
+        public static HashMap<String, Weapon> allWeapons = new HashMap<>();
+        public static HashMap<String, Armor> allArmors = new HashMap<>();
+        public static HashMap<String, Item> allItems = new HashMap<>();
 
-        Enemy[] level0enemies = new Enemy[level0.getEnemyCount()];
-        Enemy[] level1enemies = new Enemy[level1.getEnemyCount()];
-        Enemy[] level2enemies = new Enemy[level2.getEnemyCount()];
-        Enemy[] level3enemies = new Enemy[level3.getEnemyCount()];
-        Enemy[] level4enemies = new Enemy[level4.getEnemyCount()];
+    private void initializeItems() {
+        allWeapons.put("mithrilwand", mithrilWand);
+        allWeapons.put("longsword", crystalWand);
+        allWeapons.put("steelwand",steelWand);
+        allWeapons.put("steelSword", steelSword);
+        allWeapons.put("mithrilsword", mithrilSword);
+        allWeapons.put("crystalsword",crystalSword);
+        allWeapons.put("steelshield",steelShield);
+        allWeapons.put("mithrilshield",mithrilShield);
+        allWeapons.put("crystalshield",crystalShield);
+        allArmors.put("crystalpadded",crystalPadded);
+        allArmors.put("steelpadded",steelPadded);
+        allArmors.put("mithrilpadded",mithrilPadded);
+        allArmors.put("crystalchainmail",crystalChainmail);
+        allArmors.put("steelchainmail",steelChainmail);
 
-        for(int i=0;i<Math.pow(2,n);i++){
-            Enemy newEnemy = new Enemy(random.nextInt(5)+1,random.nextInt(5)+1,random.nextInt(5)+1,20);
-            level0enemies[i] = newEnemy;
+        allItems.putAll(allWeapons);
+        allItems.putAll(allArmors);
+    }
+
+        private void gameStart() throws InvalidCharClassException {
+            player.getName();
+            System.out.println("Welcome to the game");
+            Character fighter = new Character("fighter",level1);
+            Character healer = new Character("healer",level1);
+            Character tank = new Character("tank",level1);
+
+
+
+
         }
-        level0.setEnemies(level0enemies);
-
-        for(int i=0;i<Math.pow(2,n+1);i++){
-            Enemy newEnemy = new Enemy(random.nextInt(5)+1,random.nextInt(5)+1,random.nextInt(5)+1,random.nextInt(10));
-            level1enemies[i] = newEnemy;
-        }
-        level1.setEnemies(level1enemies);
-
-        for(int i=0;i<Math.pow(2,n+2);i++){
-            Enemy newEnemy = new Enemy(random.nextInt(5)+1,random.nextInt(5)+1,random.nextInt(5)+1,random.nextInt(10));
-            level2enemies[i] = newEnemy;
-        }
-        level2.setEnemies(level2enemies);
-
-        for(int i=0;i<Math.pow(2,n+3);i++){
-            Enemy newEnemy = new Enemy(random.nextInt(5)+1,random.nextInt(5)+1,random.nextInt(5)+1,random.nextInt(10));
-            level3enemies[i] = newEnemy;
-        }
-        level3.setEnemies(level3enemies);
-
-        for(int i=0;i<Math.pow(2,n+4);i++){
-            Enemy newEnemy = new Enemy(random.nextInt(5)+1,random.nextInt(5)+1,random.nextInt(5)+1,random.nextInt(10));
-            level4enemies[i] = newEnemy;
-        }
-        level4.setEnemies(level4enemies);
-
-        System.out.println(" _____   ___   _   _  _   _ _____ _   _  ______ _________________ ___________ \n" +
-                " *    /  __ \\ / _ \\ | \\ | || \\ | |  _  | \\ | | |  ___|  _  |  _  \\  _  \\  ___| ___ \\\n" +
-                " *    | /  \\// /_\\ \\|  \\| ||  \\| | | | |  \\| | | |_  | | | | | | | | | | |__ | |_/ /\n" +
-                " *    | |    |  _  || . ` || . ` | | | | . ` | |  _| | | | | | | | | | |  __||    / \n" +
-                " *    | \\__/\\| | | || |\\  || |\\  \\ \\_/ / |\\  | | |   \\ \\_/ / |/ /| |/ /| |___| |\\ \\ \n" +
-                " *     \\____/\\_| |_/\\_| \\_/\\_| \\_/\\___/\\_| \\_/ \\_|    \\___/|___/ |___/ \\____/\\_| \\_|");
-
-        String command = "null";
-
-        while (lev0cnt != level0.getEnemyCount()){
-            int x=0;
-            command = input.next();
-            Enemy currentEnemy = level0.getEnemies()[x];
-            if(command.equals("next")){
-                // next demek yerine karakter komutu çekilecek //
-                level0.getEnemies()[x].setHp(level0.getEnemies()[x].getHp()-10);
-            }
-            if(currentEnemy.getHp() <= 0){
-                x++;
-                lev0cnt++;
-            }
-            System.out.println("enemy health is "+currentEnemy.getHp());
-            System.out.println("level is 0");
-        }
-
-        while (lev1cnt != level1.getEnemyCount()){
-            command = input.next();
-            if(command.equals("next")){
-                lev1cnt++;
-            }
-            System.out.println("enemy killed");
-            System.out.println("level is 1");
-        }
-
     }
 }
