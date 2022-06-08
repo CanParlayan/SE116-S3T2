@@ -334,12 +334,37 @@ public class Character {
     public void setSpecialCooldown(int specialCooldown) {
         this.specialCooldown = specialCooldown;
     }
+    public static void Examine(Item item){ //wrap with InvalidItemException
+        System.out.println("Item name: " + item.getItemName());
+        System.out.println("Item material: " + item.getMaterial());
+        if(item instanceof Weapon) {
+            System.out.println("Item class: Weapon");
+            System.out.println("Weapon type: " + ((Weapon) item).getWeaponType()); //normally an unstable downcast, however protected by instanceof
+            System.out.println("Weapon damage: " + ((Weapon) item).getDamage());
+            System.out.println("Weapon weight: " + (item.getWeight()));
+        }
+        else if (item instanceof Armor) {
+            System.out.println("Item class: Armor");
+            System.out.println("Armor type: " + ((Armor) item).getArmorType());
+            System.out.println("Armor value: " + ((Armor) item).getArmorValue());
+            System.out.println("Armor weight: " + (item.getWeight()));
+        }
+    }
+
     public void DisplayStats(){
         System.out.println("Character class: " + this.charClass);
         System.out.println("Character strength: " + this.strength);
         System.out.println("Character vitality: " + this.vitality);
         System.out.println("Character intelligence: " + this.intelligence);
         System.out.println("Character health: " + this.health);
+        System.out.println("Character inventory: ");
+        for (Item item : this.inventory){
+            System.out.println(item.getItemName());
+        }
+        System.out.println("Character inventory: ");
+        for (Item item : this.inventory){
+            System.out.println(item.getItemName());
+        }
         if (this.heldArmor == null) System.out.println("Held armor: Unarmored");
         else {
             System.out.println("Held armor: " + this.heldArmor.getItemName());
@@ -354,6 +379,11 @@ public class Character {
             System.out.println("Weapon material: " + this.heldWeapon.getMaterial());
             System.out.println("Weapon damage: " + this.heldWeapon.getDamage());
         }
-        //TBA: held/inventory
+
+        }
     }
-}
+
+
+        }
+    }
+
