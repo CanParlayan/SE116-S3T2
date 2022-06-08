@@ -1,5 +1,14 @@
 package Objects;
 
 public interface CharacterAttack {
-    public void specialAction();
+    void Pick(Item item);
+    void Throw(Item item);
+    void Wield(Weapon weapon);
+    void Wear(Armor armor);
+    boolean HasSpaceInInventory(Item item);
+    int CalculateDamage();
+    void takeDamage(int damage);
+    void CheckDead();
+    void DisplayStats();
+
 }

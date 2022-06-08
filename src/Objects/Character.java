@@ -151,7 +151,7 @@ public class Character {
         return itemweight < this.strength * 15; //15 is arbitrary
     }
 
-    public Character(String charClass, Level gamelevel) throws InvalidCharClassException {
+    public Character(String charClass, Level gamelevel){
         this.charClass = charClass;
         this.gameLevel = gamelevel;
         switch (charClass) { //simplified switch clause
@@ -183,8 +183,7 @@ public class Character {
                 this.health = Math.toIntExact(Math.round(this.vitality * 0.7 + this.strength * 0.2 + this.intelligence * 0.1));
                 //no output because this will be internal
             }
-            default ->
-                    throw new InvalidCharClassException(this.charClass); //very intelligently designed exception to catch invalid class names
+            default -> System.out.println("Please enter a valid char class"); //very intelligently designed exception to catch invalid class names
         }
     }
 
@@ -241,7 +240,7 @@ public class Character {
             System.out.println("Oh no! " + this.getCharClass() + " is dead!");
             this.isDead = true;
         }
-}
+    }
 
     public String getCharClass() {
         return charClass;
@@ -368,7 +367,7 @@ public class Character {
         if (this.heldArmor == null) System.out.println("Held armor: Unarmored");
         else {
             System.out.println("Held armor: " + this.heldArmor.getItemName());
-            System.out.println("Armor material: " + this.heldArmor.getMaterial());
+            System.out.println("Armor material: " + (this.heldArmor.getMaterial()).getName());
             System.out.println("Armor value: " + this.heldArmor.getArmorValue());
             System.out.println("Weight: " + this.heldArmor.getWeight());
         }
@@ -376,14 +375,9 @@ public class Character {
         else {
             System.out.println("Held weapon: " + this.heldWeapon.getItemName());
             System.out.println("Weapon type: " + this.heldWeapon.getWeaponType());
-            System.out.println("Weapon material: " + this.heldWeapon.getMaterial());
+            System.out.println("Weapon material: " + (this.heldWeapon.getMaterial().getName()));
             System.out.println("Weapon damage: " + this.heldWeapon.getDamage());
         }
 
-        }
     }
-
-
-        }
-    }
-
+}
