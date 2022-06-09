@@ -7,9 +7,7 @@ import Items.Wand;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Initiliaze {
 
@@ -60,7 +58,35 @@ public class Initiliaze {
     public static HashMap<String, Weapon> allWeapons = new HashMap<>();
     public static HashMap<String, Armor> allArmors = new HashMap<>();
     public static HashMap<String, Item> allItems = new HashMap<>();
+    public static HashMap<String, Sword> allSwords = new HashMap<>(); //CanParlayan: make sure to initialize
+    public static HashMap<String, Shield> allShields = new HashMap<>();
+    public static HashMap<String, Wand> allWands = new HashMap<>();
 
+    public static Weapon EnemyRandomWeapon(){ //probably very unbalanced gameplay wise because every material gets the same weight, but well, adds randomness into runs
+        Random random = new Random();
+        int swordDropChance = 80;
+        int shieldDropChance = 10;
+        int wandDropChance = 10;
+        int randomNumber = random.nextInt((swordDropChance+shieldDropChance+wandDropChance+1));
+        if (randomNumber < swordDropChance){
+            List<String> swordsAsList = new ArrayList<String>(allSwords.keySet()); //since the hashmaps are keyed in strings, I just throw all keys into an arraylist and randomize over it. Learnt this just now.
+            return allSwords.get(swordsAsList.get(random.nextInt(swordsAsList.size())));
+        }
+        else if (randomNumber < (swordDropChance+shieldDropChance)){
+            List<String> shieldsAsList = new ArrayList<String>(allShields.keySet());
+            return allSwords.get(shieldsAsList.get(random.nextInt(shieldsAsList.size())));
+        }
+        else if (randomNumber <= (swordDropChance+shieldDropChance+wandDropChance)){
+            List<String> wandsAsList = new ArrayList<String>(allWands.keySet());
+            return allSwords.get(wandsAsList.get(random.nextInt(wandsAsList.size())));
+        }
+        return null; //it drops nothing in the event above code fails to work
+    }
+    public static Armor EnemyRandomArmor(){
+        Random random = new Random();
+        List<String> armorsAsList = new ArrayList<String>(allArmors.keySet());
+        return allArmors.get(armorsAsList.get(random.nextInt(armorsAsList.size())));
+    }
     private void initializeItems() {
         allWeapons.put("mithrilwand", mithrilWand);
         allWeapons.put("longsword", crystalWand);
