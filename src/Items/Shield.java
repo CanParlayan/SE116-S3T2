@@ -1,23 +1,21 @@
 package Items;
 
 import Objects.CharacterAttack;
+import Objects.Enemy;
 import Objects.Material;
 import Objects.Weapon;
+import Objects.Character;
 
-public class Shield extends Weapon implements CharacterAttack {
+public class Shield extends Weapon {
         public Shield(Material material) {
             super(material,
-                    Material.getName()+"Shield" ,
+                    Material.getName()+" Shield" ,
                     Material.getValueMultiplier()*3,
                     11,
                     "Vitality",
                     5*Material.getDamageMultiplier());
         }
-    public void stun(){
-
-    }
-
-    public void specialAction() {
-        stun();
+    public static long stun(Character character, Enemy enemy){
+        return Math.round(character.CalculateDamage()/enemy.getVitality());
     }
 }
