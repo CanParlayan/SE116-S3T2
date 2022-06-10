@@ -52,9 +52,9 @@ public class Initiliaze {
     static Armor crystalFullPlate = new FullPlate(crystal);
     static Armor steelFullPlate = new FullPlate(steel);
     static Armor mithrilFullPlate = new FullPlate(mithril);
-    static Character tank = new Character("Tank", level1, mithrilShield);
-    static Character healer = new Character("Healer", level1, mithrilWand);
-    static Character fighter = new Character("Fighter", level1, mithrilSword);
+    static Character tank = new Character("Tank", level1, mithrilShield, EnemyRandomArmor());
+    static Character healer = new Character("Healer", level1, mithrilWand, EnemyRandomArmor());
+    static Character fighter = new Character("Fighter", level1, mithrilSword, EnemyRandomArmor());
 
     public static ArrayList<Character> characters = new ArrayList<>();
 
@@ -67,33 +67,32 @@ public class Initiliaze {
     public static HashMap<String, Weapon> allWeapons = new HashMap<>();
     public static HashMap<String, Armor> allArmors = new HashMap<>();
     public static HashMap<String, Item> allItems = new HashMap<>();
-    public static HashMap<String, Sword> allSwords = new HashMap<>(); //CanParlayan: make sure to initialize
-    public static HashMap<String, Shield> allShields = new HashMap<>();
-    public static HashMap<String, Wand> allWands = new HashMap<>();
+    public static HashMap<String, Weapon> allSwords = new HashMap<>(); //CanParlayan: make sure to initialize
+    public static HashMap<String, Weapon> allShields = new HashMap<>();
+    public static HashMap<String, Weapon> allWands = new HashMap<>();
+    public static HashMap<String, Character> allEnemies = new HashMap<>();
 
     public static Weapon EnemyRandomWeapon(){ //probably very unbalanced gameplay wise because every material gets the same weight, but well, adds randomness into runs
         Random random = new Random();
         int swordDropChance = 80;
         int shieldDropChance = 10;
         int wandDropChance = 10;
-        int randomNumber = random.nextInt((swordDropChance+shieldDropChance+wandDropChance+1));
-        if (randomNumber < swordDropChance){
-            List<String> swordsAsList = new ArrayList<String>(allSwords.keySet()); //since the hashmaps are keyed in strings, I just throw all keys into an arraylist and randomize over it. Learnt this just now.
+        int randomNumber = random.nextInt((swordDropChance + shieldDropChance + wandDropChance + 1));
+        if (randomNumber < swordDropChance) {
+            List<String> swordsAsList = new ArrayList<>(allSwords.keySet()); //since the hashmaps are keyed in strings, I just throw all keys into an arraylist and randomize over it. Learnt this just now.
             return allSwords.get(swordsAsList.get(random.nextInt(swordsAsList.size())));
-        }
-        else if (randomNumber < (swordDropChance+shieldDropChance)){
-            List<String> shieldsAsList = new ArrayList<String>(allShields.keySet());
+        } else if (randomNumber < (swordDropChance + shieldDropChance)) {
+            List<String> shieldsAsList = new ArrayList<>(allShields.keySet());
             return allSwords.get(shieldsAsList.get(random.nextInt(shieldsAsList.size())));
-        }
-        else if (randomNumber <= (swordDropChance+shieldDropChance+wandDropChance)){
-            List<String> wandsAsList = new ArrayList<String>(allWands.keySet());
+        } else if (randomNumber <= (swordDropChance + shieldDropChance + wandDropChance)) {
+            List<String> wandsAsList = new ArrayList<>(allWands.keySet());
             return allSwords.get(wandsAsList.get(random.nextInt(wandsAsList.size())));
         }
         return null; //it drops nothing in the event above code fails to work
     }
     public static Armor EnemyRandomArmor(){
         Random random = new Random();
-        List<String> armorsAsList = new ArrayList<String>(allArmors.keySet());
+        List<String> armorsAsList = new ArrayList<>(allArmors.keySet());
         return allArmors.get(armorsAsList.get(random.nextInt(armorsAsList.size())));
     }
     private void initializeItems() {
@@ -120,7 +119,7 @@ public class Initiliaze {
         allWeapons.putAll(allWands);
         allItems.putAll(allWeapons);
         allItems.putAll(allArmors);
-        Character enemy = new Character("Enemy", level1, EnemyRandomWeapon());
+        Character enemy = new Character("Enemy", level1, EnemyRandomWeapon(),EnemyRandomArmor());
         allEnemies.put("enemy", enemy);
     }
 
@@ -155,111 +154,111 @@ public class Initiliaze {
             return;
         }
         if (inputEquals(words, new String[]{"tank"}, new String[]{"throw"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
                 turn--;
             }
-            Item item = allItems.get(itemName);
+            Item item = allItems.get(itemName.toString());
             if (item != null)
                 tank.Throw(item);
         } else if (inputEquals(words, new String[]{"healer"}, new String[]{"throw"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
-            Item item = allItems.get(itemName);
+            Item item = allItems.get(itemName.toString());
             if (item != null)
                 healer.Throw(item);
         } else if (inputEquals(words, new String[]{"fighter"}, new String[]{"throw"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
             turn--;
-            Item item = allItems.get(itemName);
+            Item item = allItems.get(itemName.toString());
             if (item != null)
                 fighter.Throw(item);
             turnCounter();
         }
         if (inputEquals(words, new String[]{"tank"}, new String[]{"pick"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
-            Item item = allItems.get(itemName);
+            Item item = allItems.get(itemName.toString());
             if (item != null)
                 tank.Pick(item);
             level1.RemoveFromLevelDrops(item);
         } else if (inputEquals(words, new String[]{"fighter"}, new String[]{"pick"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
             turn--;
-            Item item = allItems.get(itemName);
+            Item item = allItems.get(itemName.toString());
             if (item != null)
                 fighter.Pick(item);
             level1.RemoveFromLevelDrops(item);
             turnCounter();
         } else if (inputEquals(words, new String[]{"healer"}, new String[]{"pick"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
-            Item item = allItems.get(itemName);
+            Item item = allItems.get(itemName.toString());
             if (item != null)
                 healer.Pick(item);
             level1.RemoveFromLevelDrops(item);
         }
         if (inputEquals(words, new String[]{"tank"}, new String[]{"wear"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
-            Armor item = allArmors.get(itemName);
+            Armor item = allArmors.get(itemName.toString());
             if (item != null)
                 tank.Wear(item);
         } else if (inputEquals(words, new String[]{"fighter"}, new String[]{"wear"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
-            Armor item = allArmors.get(itemName);
+            Armor item = allArmors.get(itemName.toString());
             if (item != null)
                 fighter.Wear(item);
         } else if (inputEquals(words, new String[]{"healer"}, new String[]{"wear"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
-            Armor item = allArmors.get(itemName);
+            Armor item = allArmors.get(itemName.toString());
             if (item != null)
                 healer.Wear(item);
         }
         if (inputEquals(words, new String[]{"tank"}, new String[]{"wield"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
-            Weapon item = allWeapons.get(itemName);
+            Weapon item = allWeapons.get(itemName.toString());
             if (item != null)
                 tank.Wield(item);
         } else if (inputEquals(words, new String[]{"healer"}, new String[]{"wield"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
-            Weapon item = allWeapons.get(itemName);
+            Weapon item = allWeapons.get(itemName.toString());
             if (item != null)
                 healer.Wield(item);
         } else if (inputEquals(words, new String[]{"fighter"}, new String[]{"wield"})) {
-            String itemName = words[2];
+            StringBuilder itemName = new StringBuilder(words[2]);
             for (int i = 3; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
             turn--;
-            Weapon item = allWeapons.get(itemName);
+            Weapon item = allWeapons.get(itemName.toString());
             if (item != null)
                 fighter.Wield(item);
             turnCounter();
@@ -293,12 +292,12 @@ public class Initiliaze {
                 }
         }
         if (inputEquals(words, examine)) {
-            String itemName = words[1];
+            StringBuilder itemName = new StringBuilder(words[1]);
             for (int i = 2; i < words.length; i++) {
-                itemName += " " + words[i];
+                itemName.append(" ").append(words[i]);
             }
             turn--;
-            Item item = allItems.get(itemName);
+            Item item = allItems.get(itemName.toString());
             if (item != null)
                 healer.Examine(item);
             turnCounter();
@@ -307,23 +306,20 @@ public class Initiliaze {
             Scanner scanner = new Scanner(System.in);
             if (healer.getHeldWeapon() instanceof Wand) {
                 System.out.println("Which character you want to heal?");
-                for (int i = 0; i < characters.size(); i++) {
-                    System.out.println(characters.get(i).getCharClass() + " has " + characters.get(i).getHealth());
+                for (Character character : characters) {
+                    System.out.println(character.getCharClass() + " has " + character.getHealth());
                 }
                 String specialInput = scanner.nextLine();
                 specialInput = specialInput.toLowerCase();
-                System.out.println(specialInput);
                 int index = 0;
-                for (int i = 0; i < characters.size(); i++) {
-                    if (characters.get(i).getCharClass().toLowerCase().equals(specialInput)) {
+                for (Character character : characters) {
+                    if (character.getCharClass().toLowerCase().equals(specialInput)) {
                         break;
                     }
                     index++;
                 }
                 int heal = (int) ((Wand) healer.getHeldWeapon()).heal(fighter);
-                System.out.println(heal);
                 characters.get(index).updateHP(heal); //updateHp yazılacak
-                System.out.println("MaxHp" + characters.get(index).getMaxHP());
                 characters.get(index).setHealth(characters.get(index).getHealth() + heal);
                 System.out.println("Updated HP of " + characters.get(index).getCharClass() + " is " + characters.get(index).getHealth());
                 turn++;
@@ -357,11 +353,11 @@ public class Initiliaze {
         */
         }
         if (inputEquals(words, new String[]{"fighter"}, attack)) {
-                String enemyName = words[2];
+                StringBuilder enemyName = new StringBuilder(words[2]);
                 for (int i = 3; i < words.length; i++) {
-                    enemyName += " " + words[i];
+                    enemyName.append(" ").append(words[i]);
                 }
-                Character enemy = allEnemies.get(enemyName);
+                Character enemy = allEnemies.get(enemyName.toString());
                 if (enemy != null) {
                     int fighterDamage = fighter.CalculateDamage();
                     enemy.TakeDamage(fighterDamage);
@@ -479,7 +475,6 @@ public class Initiliaze {
             System.out.println("You left all your items while escaping");
             System.out.println("You will never be known as an hero. Those who know you will call you a coward");
             System.exit(1);
-            return;
         }
 
     }
@@ -610,10 +605,12 @@ public class Initiliaze {
         initializeItems();
         gameStart();
         System.out.println(welcomeUser);
+        checkEnemies();
         while (running) {
             System.out.println(askUser);
             String start = scan.nextLine();
             Input(start);
+
         if(turn < 1){
            // attackPlayer(,fighter);
         }
