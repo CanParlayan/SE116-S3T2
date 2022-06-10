@@ -155,7 +155,8 @@ public class Character implements CharacterAttack{
     public Character(String charClass, Level gamelevel, Weapon weapon, Armor armor){
         this.charClass = charClass;
         this.gameLevel = gamelevel;
-        this.weapon = weapon;
+        this.heldWeapon = weapon;
+        this.heldArmor = armor;
         switch (charClass) { //simplified switch clause
             case "Tank" -> {
                 this.strength = rng.nextInt(6)+1;
