@@ -303,7 +303,7 @@ public class Initiliaze {
                 healer.Examine(item);
             turnCounter();
         }
-        if (inputEquals(words, specialAction)) {       //special action later to be changed
+        if (inputEquals(words,new String[]{"healer"}, specialAction)) {       //special action later to be changed
             Scanner scanner = new Scanner(System.in);
             if (healer.getHeldWeapon() instanceof Wand) {
                 System.out.println("Which character you want to heal?");
@@ -324,34 +324,13 @@ public class Initiliaze {
                 characters.get(index).setHealth(characters.get(index).getHealth() + heal);
                 System.out.println("Updated HP of " + characters.get(index).getCharClass() + " is " + characters.get(index).getHealth());
                 turn++;
-            } /*else if (fighter.getHeldWeapon().getType().equals("Sword")) {
-                System.out.println("You can either stay away or block an enemy for one turn.");
-                System.out.println("To stay away press 1, to block press 2");
-                int specialInput = scanner.nextInt();
-                scanner.nextLine();
-                switch (specialInput) {
-                    case 1:
-                        Sword swordOfFighter = (Sword) fighter.getHeldWeapon();
-                        int stayAway = (int) swordOfFighter.disengage(fighter);
-                        fighter.setStayAway(stayAway);
-                        break;
-                    case 2:
-                        int enemyCount = enemies.size();
-                        enemyCount = enemyCount - 1;
-                        int randEnemy = rand.nextInt(0, enemyCount);
-                        enemies.get(randEnemy).setBlock(true);
-                        System.out.println(enemies.get(randEnemy).getName() + " has been blocked for one turn.");
-                        turn++;
-                        break;
-                    default:
-                        System.out.println("Please enter a valid integer.");
-                        break;
-                }*/
-      /*  } else if (fighter.getHeldWeapon().getType().equals("Shield")) {
-            System.out.println("The special action of the shield is only activated if and only if when an enemy attacks.");
-        } else {
-            System.out.println("Since Fighter has no weapon, she has no special action too.");
-        */
+            }else if (healer.getHeldWeapon() instanceof Sword){
+
+            }else if(healer.getHeldWeapon() instanceof Shield){
+
+
+            }
+
         }
         if (inputEquals(words, new String[]{"fighter"}, attack)) {
                 StringBuilder enemyName = new StringBuilder(words[2]);
@@ -435,106 +414,6 @@ public class Initiliaze {
             turnCounter();
         }
 
-
-           /* while (enemies.size() > 0) {
-                int i = 0; //If a character attacks or wield/wears an item than turn count increases one and when the turn count reaches 3(2) while loop will terminate
-                for (int a = 0; a < enemies.size(); a++) {
-                    if (enemies.get(a).isBlock()) {
-                        enemies.get(a).setBlock(false);
-                    }
-                }
-                for (int bei = 0; bei < myCharacters.size(); bei++) {
-                    if (myCharacters.get(bei).getStayAway() > 0) {
-                        int fung = myCharacters.get(bei).getStayAway() - 1;
-                        myCharacters.get(bei).setStayAway(fung);
-                    }
-                }
-                while (i < 3) {
-                    if (enemies.size() > 0) {
-                                    String choice = sc.nextLine();
-                                    choice = choice.toLowerCase();
-                                    switch (choice) {
-                                        case "attack":
-                                            System.out.println("Which enemy you want to attack?");
-                                            //Enemy list
-                                            for (int b = 0; b < enemies.size(); b++) {
-                                                System.out.println("Name: " + enemies.get(b).getName() + "\nHP: " + enemies.get(b).getHP());
-                                            }
-                                            //Inputting
-                                            System.out.println("Please type their name: ");
-                                            String enemyChoice = sc.nextLine();
-                                            enemyChoice = enemyChoice.toLowerCase();
-                                            //Searching the index of the desired enemy.
-                                            int index1 = 0;
-                                            for (int a = 0; a < enemies.size(); a++) {
-                                                if (enemies.get(a).getName().toLowerCase().equals(enemyChoice)) {
-                                                    break;
-                                                }
-                                                index1++;
-                                            }
-                                            System.out.println("Luna is attacking to " + enemies.get(index1).getName());
-                                            double damage = healer.damage();
-                                            enemies.get(index1).updateHP(1, damage);
-                                            System.out.println("Luna has attacked with " + damage + ".");
-                                            System.out.println(enemies.get(index1).getName() + " has " + enemies.get(index1).getHP() + " HP.");
-                                            if (enemies.get(index1).getHP() <= 0) {
-                                                System.out.println(enemies.get(index1).getName() + " is dead.");
-                                                Weapons newWeapon = dropWeapon();
-                                                System.out.println(newWeapon.getName() + " has been dropped.");
-                                                levelItems.add(newWeapon);
-                                                enemies.remove(index1);
-                                            }
-                                            if (enemies.size() > 0) {
-                                                System.out.println("You have used 1 turn for this action. Remaining turns: " + (3 - (i + 1)));
-                                            }
-                                            i++;
-                                            break;
-                                    }
-                                }
-                        }
-                    }
-            if (enemies.size() > 0) {
-                for (int xue = 0; xue < enemies.size(); xue++) {
-                    int hua = myCharacters.size();
-                    hua = hua - 1;
-                    int randomXue = rand.nextInt(0, hua);
-                    if (!enemies.get(xue).isBlock()) {
-                        if (myCharacters.get(randomXue).getStayAway() == 0) {
-                            if (myCharacters.get(randomXue).getWieldedWeapon().getType().equals("Shield")) {
-                                boolean isBlock = rand.nextBoolean();
-                                if (!isBlock) {
-                                    System.out.println(enemies.get(xue).getName() + " is attacking to " + myCharacters.get(randomXue).getName() + " with a damage " + enemies.get(xue).damage());
-                                    double damage = enemies.get(xue).damage();
-                                    myCharacters.get(randomXue).updateHP(1, damage);
-                                    System.out.println("Remaining HP of " + myCharacters.get(randomXue).getHP());
-                                } else {
-                                    System.out.println(enemies.get(xue));
-                                }
-                            } else {
-                                System.out.println(enemies.get(xue).getName() + " is attacking to " + myCharacters.get(randomXue).getName() + " with a damage " + enemies.get(xue).damage());
-                                double damage = enemies.get(xue).damage();
-                                myCharacters.get(randomXue).updateHP(1, damage);
-                                System.out.println("Remaining HP of " + myCharacters.get(randomXue).getHP());
-                            }
-                        }
-                        if (myCharacters.get(randomXue).getHP() <= 0) {
-                            System.out.println(myCharacters.get(randomXue).getName() + " is dead T-T");
-                            myCharacters.remove(randomXue);
-                        }
-                    } else {
-                        System.out.println(enemies.get(xue).getName() + " is not able to move for one turn.");
-                    }
-                }
-            } else {
-                System.out.println("You are going to level up. ");
-                i = 3;
-            }else{
-                gameFlag = false;
-            }
-
-            level++;
-            enemyAmount = (int) Math.pow(2, level);
-        }*/
         if (inputEquals(words, stop)) {
             System.out.println("You decided to run away and didn't accomplished what you have came for");
             System.out.println("You left all your items while escaping");
