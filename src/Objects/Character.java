@@ -21,7 +21,7 @@ public class Character implements CharacterAttack{
     private int health;
     private boolean isStunned;
     private int stunLength;
-    private boolean isDead;
+    private boolean isDead = false;
     private int specialCooldown;
     private Level gameLevel; //will be used to access the level drops without exposing it public, no setter/getters, but a constructor parameter.
 
@@ -223,7 +223,7 @@ public class Character implements CharacterAttack{
                 System.out.println("New armor durability: " + heldArmor.getArmorValue());
                 this.CheckDead();
             }
-            else if (heldArmor.getArmorValue()-damage >= 0){
+            else if (heldArmor.getArmorValue()-damage <= 0){
                 int takenDamage = (int) Math.abs(this.heldArmor.getArmorValue() - damage);
                 if(takenDamage == 0){
                     System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage. Their " + heldArmor.getItemName() + " breaks while protecting them from the attack.");
@@ -231,7 +231,7 @@ public class Character implements CharacterAttack{
                     this.CheckDead();
                 }
                 else {
-                    System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage. Their " + heldArmor.getItemName() + "breaks.");
+                    System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage. Their " + heldArmor.getItemName() + " breaks.");
                     System.out.println("They take an extra " + takenDamage + " damage that the armor couldn't block.");
                     this.heldArmor = null;
                     this.setHealth(this.getHealth()-takenDamage);
