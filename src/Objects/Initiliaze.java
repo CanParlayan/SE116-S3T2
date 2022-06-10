@@ -507,13 +507,20 @@ public class Initiliaze {
             }
         }
     }
-    void attackPlayer(Character enemy, Character character) {
-        if (character == tank && !tank.getIsDead()) {
-            if (character.getHeldArmor().getArmorValue() >= 0) {
-                if (character.getHeldArmor().getArmorValue() - enemy.getStrength() < 0) {
-                    int temp = Math.abs((int) (character.getHeldArmor().getArmorValue() - enemy.getStrength()));
-                    character.getHeldArmor().setArmorValue(0);
-                    character.setHealth(character.getHealth() - temp);
+    //enemy.getStrength() yerine enemyHeldWeapon olabilir.
+    void attackPlayer(Character enemy) {
+        if (!tank.getIsDead()) {
+            if (tank.getHeldArmor().getArmorValue() >= 0) {
+                System.out.println(tank.getHeldArmor().getArmorValue());
+                System.out.println(enemy.getStrength());
+                if ((tank.getHeldArmor().getArmorValue() - enemy.getStrength()) < 0) {
+                    int temp = Math.abs(tank.getHeldArmor().getArmorValue() - enemy.getStrength());
+                    tank.getHeldArmor().setArmorValue(0);
+                    tank.setHeldArmor(null);
+                    System.out.println(tank.getCharClass() + "'s armor is broken");
+                    tank.setHealth(tank.getHealth() - temp);
+                    System.out.println(tank.getCharClass() + " took " + temp + " damage.");
+
                 } else {
                     character.getHeldArmor().setArmorValue(character.getHeldArmor().getValue() - enemy.getStrength());
                 }
