@@ -152,7 +152,7 @@ public class Character implements CharacterAttack{
         return itemweight < this.strength * 15; //15 is arbitrary
     }
 
-    public Character(String charClass, Level gamelevel,Weapon weapon){
+    public Character(String charClass, Level gamelevel, Weapon weapon, Armor armor){
         this.charClass = charClass;
         this.gameLevel = gamelevel;
         this.weapon = weapon;
