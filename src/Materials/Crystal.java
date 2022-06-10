@@ -4,6 +4,6 @@ import Objects.Material;
 
 public class Crystal extends Material {
     public Crystal() {
-        super(8,"Crystal",8);
+        super(8,"Crystal",1);
     }
 }

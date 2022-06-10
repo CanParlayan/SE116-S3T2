@@ -3,6 +3,7 @@ package Objects;
 import java.security.SecureRandom;
 
 public class Enemy extends Character{
+    private String name;
     private int strength;
     private int vitality;
     private int intelligence;
@@ -10,10 +11,9 @@ public class Enemy extends Character{
 
     SecureRandom random = new SecureRandom();
     static Level level = new Level();
-    public Enemy(int strength, int vitality, int intelligence, int hp) {
-        super("enemy",level);
+    public Enemy(int strength, int vitality, int intelligence, int hp, String name,Weapon weapon) {
+        super("enemy", level, weapon);
     }
-
     public void setStrength(int strength) {
         this.strength = strength;
     }
@@ -46,8 +46,8 @@ public class Enemy extends Character{
         return hp;
     }
 
-    public Enemy(int strength, int vitality, int intelligence,int hp,Level gamelevel){
-        super("enemy",gamelevel);
+    public Enemy(int strength, int vitality, int intelligence,int hp,Level gamelevel,Weapon weapon){
+        super("enemy",gamelevel,weapon);
         this.strength = strength;
         this.vitality = vitality;
         this.intelligence = intelligence;
