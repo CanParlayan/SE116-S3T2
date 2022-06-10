@@ -18,6 +18,6 @@ public class Wand extends Weapon {
                 5*Material.getDamageMultiplier());
     }
     public double heal(Character character){
-        return this.getDamage()+ character.getIntelligence()/2;
+        return Math.round(character.getIntelligence()/2);
     }
 }

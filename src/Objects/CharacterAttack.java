@@ -7,7 +7,6 @@ public interface CharacterAttack {
     void Wear(Armor armor);
     boolean HasSpaceInInventory(Item item);
     int CalculateDamage();
-    void takeDamage(int damage);
     void CheckDead();
     void DisplayStats();
 
