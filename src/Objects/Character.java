@@ -19,9 +19,10 @@ public class Character implements CharacterAttack{
     private int intelligence;
     private int vitality;
     private int health;
-    private boolean isStunned;
+    private boolean stunned = false;
     private int stunLength;
     private boolean isDead = false;
+    private boolean isInvincible = false;
     private int specialCooldown;
     private Level gameLevel; //will be used to access the level drops without exposing it public, no setter/getters, but a constructor parameter.
 
@@ -306,10 +307,6 @@ public class Character implements CharacterAttack{
         this.health = health;
     }
 
-    public void setStunned(boolean stunned) {
-        isStunned = stunned;
-    }
-
     public void setStunLength(int stunLength) {
         this.stunLength = stunLength;
     }
@@ -320,10 +317,6 @@ public class Character implements CharacterAttack{
 
     public int getHealth() {
         return health;
-    }
-
-    public boolean isStunned() {
-        return isStunned;
     }
 
     public int getStunLength() {
@@ -398,5 +391,21 @@ public class Character implements CharacterAttack{
     }
     public long getMaxHP() {
         return Math.round(0.7*this.vitality + 0.2*this.strength + 0.1*this.intelligence);
+    }
+
+    public boolean isInvincible() {
+        return isInvincible;
+    }
+
+    public void setInvincible(boolean invincible) {
+        isInvincible = invincible;
+    }
+
+    public boolean isStunned() {
+        return stunned;
+    }
+
+    public void setStunned(boolean stunned) {
+        this.stunned = stunned;
     }
 }
