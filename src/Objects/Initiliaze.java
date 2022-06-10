@@ -52,9 +52,9 @@ public class Initiliaze {
     static Armor crystalFullPlate = new FullPlate(crystal);
     static Armor steelFullPlate = new FullPlate(steel);
     static Armor mithrilFullPlate = new FullPlate(mithril);
-    static Character tank = new Character("Tank", level1, mithrilShield, EnemyRandomArmor());
-    static Character healer = new Character("Healer", level1, mithrilWand, EnemyRandomArmor());
-    static Character fighter = new Character("Fighter", level1, mithrilSword, EnemyRandomArmor());
+    static Character tank = new Character("Tank", level1, mithrilShield, steelFullPlate);
+    static Character healer = new Character("Healer", level1, mithrilWand, steelFullPlate);
+    static Character fighter = new Character("Fighter", level1, mithrilSword, steelFullPlate);
 
     public static ArrayList<Character> characters = new ArrayList<>();
 
