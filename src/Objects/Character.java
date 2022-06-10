@@ -218,7 +218,7 @@ public class Character implements CharacterAttack{
 
         else if (heldArmor.getArmorValue() > 0){
             if (heldArmor.getArmorValue()-damage > 0){
-                heldArmor.setArmorValue(heldArmor.getArmorValue()-damage);
+                heldArmor.setArmorValue((int) (heldArmor.getArmorValue()-damage));
                 System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage but all of it was blocked off by " + this.heldArmor.getItemName() + ".");
                 System.out.println("New armor durability: " + heldArmor.getArmorValue());
                 this.CheckDead();

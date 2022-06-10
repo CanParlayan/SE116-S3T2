@@ -1,10 +1,10 @@
 package Objects;
 
 public class Armor extends Item{
-    private double armorValue;
+    private int armorValue;
     private String armorType;
 
-    public Armor(Material material, String itemName, double value, double weight, double armorValue) {
+    public Armor(Material material, String itemName, double value, double weight, int armorValue) {
         super(material, itemName, value, weight);
         this.armorValue = armorValue;
     }
@@ -14,11 +14,11 @@ public class Armor extends Item{
     }
 
 
-    public double getArmorValue() {
+    public int getArmorValue() {
         return armorValue;
     }
 
-    public void setArmorValue(double armorValue) {
+    public void setArmorValue(int armorValue) {
         this.armorValue = armorValue;
     }
 

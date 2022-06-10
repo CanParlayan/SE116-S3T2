@@ -30,7 +30,7 @@ public class Initiliaze {
     Scanner scan = new Scanner(System.in);
     static Random rand = new Random();
     static Level level1 = new Level();
-    int turn = 3;
+    int turn = 1;     //change later
 
 
     static Weapon steelWand = new Wand(steel);
@@ -362,13 +362,77 @@ public class Initiliaze {
                 if (enemy != null) {
                     int fighterDamage = fighter.CalculateDamage();
                     enemy.TakeDamage(fighterDamage);
-                    allEnemies.remove("enemy");
+                    if(enemy.getHealth() > 0) {
+                        System.out.println("Enemy's current HP: " + enemy.getHealth());
+                    }else{
+                        System.out.print("");
+                    }
+                    if(enemy.getHeldArmor() == null){
+                        System.out.println("");
+                    }
+                    else {
+                        System.out.println("Enemy's current Armor: " + enemy.getHeldArmor().getArmorValue());
+                    }
+                    if(enemy.getIsDead()) {
+                        allEnemies.remove("enemy");
+                    }
                 }
                 turn--;
                 turnCounter();
             }
-        if(inputEquals(words, new String[]{"check"})){
-            checkEnemies();
+        if (inputEquals(words, new String[]{"tank"}, attack)) {
+            StringBuilder enemyName = new StringBuilder(words[2]);
+            for (int i = 3; i < words.length; i++) {
+                enemyName.append(" ").append(words[i]);
+            }
+            Character enemy = allEnemies.get(enemyName.toString());
+            if (enemy != null) {
+                int tankDamage = tank.CalculateDamage();
+                enemy.TakeDamage(tankDamage);
+                if(enemy.getHealth() > 0) {
+                    System.out.println("Enemy's current HP: " + enemy.getHealth());
+                }else{
+                    System.out.print("");
+                }
+                if(enemy.getHeldArmor() == null){
+                    System.out.println("");
+                }
+                else {
+                    System.out.println("Enemy's current Armor: " + enemy.getHeldArmor().getArmorValue());
+                }
+                if(enemy.getIsDead()) {
+                    allEnemies.remove("enemy");
+                }
+            }
+            turn--;
+            turnCounter();
+        }
+        if (inputEquals(words, new String[]{"healer"}, attack)) {
+            StringBuilder enemyName = new StringBuilder(words[2]);
+            for (int i = 3; i < words.length; i++) {
+                enemyName.append(" ").append(words[i]);
+            }
+            Character enemy = allEnemies.get(enemyName.toString());
+            if (enemy != null) {
+                int healerDamage = healer.CalculateDamage();
+                enemy.TakeDamage(healerDamage);
+                if(enemy.getHealth() > 0) {
+                    System.out.println("Enemy's current HP: " + enemy.getHealth());
+                }else{
+                    System.out.print("");
+                }
+                if(enemy.getHeldArmor() == null){
+                    System.out.println("");
+                }
+                else {
+                    System.out.println("Enemy's current Armor: " + enemy.getHeldArmor().getArmorValue());
+                }
+                if(enemy.getIsDead()) {
+                    allEnemies.remove("enemy");
+                }
+            }
+            turn--;
+            turnCounter();
         }
 
 
@@ -504,7 +568,7 @@ public class Initiliaze {
         else {
             for (String i : allEnemies.keySet()) {
 
-                System.out.println("There is " + i);
+                System.out.println("There is a " + i);
             }
         }
     }
@@ -523,87 +587,56 @@ public class Initiliaze {
                     System.out.println(tank.getCharClass() + " took " + temp + " damage.");
 
                 } else {
-                    character.getHeldArmor().setArmorValue(character.getHeldArmor().getValue() - enemy.getStrength());
+                    tank.getHeldArmor().setArmorValue((int) (tank.getHeldArmor().getValue() - enemy.getStrength()));
+                    System.out.println(tank.getCharClass() + " took " + enemy.getStrength() + " damage.");
                 }
             } else {
-                character.setHealth(character.getHealth() - enemy.getStrength());
+                tank.setHealth(tank.getHealth() - enemy.getStrength());
+                System.out.println(tank.getCharClass() + " took " + enemy.getStrength() + " damage.");
             }
+            tank.CheckDead();
             turn = 3;
-        }
-        else if (character == tank && tank.getIsDead() && !fighter.getIsDead()) {
-            character = fighter;
-            if (character.getHeldArmor().getArmorValue() >= 0) {
-                if (character.getHeldArmor().getArmorValue() - enemy.getStrength() < 0) {
-                    int temp = Math.abs((int) (character.getHeldArmor().getArmorValue() - enemy.getStrength()));
-                    character.getHeldArmor().setArmorValue(0);
-                    character.setHealth(character.getHealth() - temp);
+        } else if (tank.getIsDead() && !fighter.getIsDead()) {
+            if (fighter.getHeldArmor().getArmorValue() >= 0) {
+                if ((fighter.getHeldArmor().getArmorValue()) - enemy.getStrength() < 0) {
+                    int temp = Math.abs(fighter.getHeldArmor().getArmorValue() - enemy.getStrength());
+                    fighter.getHeldArmor().setArmorValue(0);
+                    fighter.setHeldArmor(null);
+                    System.out.println(fighter.getCharClass() + "'s armor is broken");
+                    fighter.setHealth(fighter.getHealth() - temp);
+                    System.out.println(fighter.getCharClass() + " took " + temp + " damage.");
                 } else {
-                    character.getHeldArmor().setArmorValue(character.getHeldArmor().getValue() - enemy.getStrength());
+                    fighter.getHeldArmor().setArmorValue((int) (fighter.getHeldArmor().getValue() - enemy.getStrength()));
+                    System.out.println(fighter.getCharClass() + " took " + enemy.getStrength() + " damage.");
                 }
             } else {
-                character.setHealth(character.getHealth() - enemy.getStrength());
+                fighter.setHealth(fighter.getHealth() - enemy.getStrength());
+                System.out.println(fighter.getCharClass() + " took " + enemy.getStrength() + " damage.");
             }
+            fighter.CheckDead();
             turn = 3;
-        }
-        else if (character == tank && tank.getIsDead() && fighter.getIsDead() && !healer.getIsDead()) {
-            character = healer;
-            if (character.getHeldArmor().getArmorValue() >= 0) {
-                if (character.getHeldArmor().getArmorValue() - enemy.getStrength() < 0) {
-                    int temp = Math.abs((int) (character.getHeldArmor().getArmorValue() - enemy.getStrength()));
-                    character.getHeldArmor().setArmorValue(0);
-                    character.setHealth(character.getHealth() - temp);
+        } else if (tank.getIsDead() && fighter.getIsDead() && !healer.getIsDead()) {
+            if ((healer.getHeldArmor().getArmorValue()) >= 0) {
+                if (healer.getHeldArmor().getArmorValue() - enemy.getStrength() < 0) {
+                    int temp = Math.abs((healer.getHeldArmor().getArmorValue() - enemy.getStrength()));
+                    healer.getHeldArmor().setArmorValue(0);
+                    healer.setHeldArmor(null);
+                    System.out.println(healer.getCharClass() + "'s armor is broken");
+                    healer.setHealth(healer.getHealth() - temp);
+                    System.out.println(healer.getCharClass() + " took " + temp + " damage.");
                 } else {
-                    character.getHeldArmor().setArmorValue(character.getHeldArmor().getValue() - enemy.getStrength());
+                    healer.getHeldArmor().setArmorValue((int) (healer.getHeldArmor().getValue() - enemy.getStrength()));
+                    System.out.println(healer.getCharClass() + " took " + enemy.getStrength() + " damage.");
                 }
             } else {
-                character.setHealth(character.getHealth() - enemy.getStrength());
+                healer.setHealth(healer.getHealth() - enemy.getStrength());
+                System.out.println(healer.getCharClass() + " took " + enemy.getStrength() + " damage.");
             }
-            turn = 3;
-        }
-        else if (character == fighter && !fighter.getIsDead()){
-            if (character.getHeldArmor().getArmorValue() >= 0) {
-                if (character.getHeldArmor().getArmorValue() - enemy.getStrength() < 0) {
-                    int temp = Math.abs((int) (character.getHeldArmor().getArmorValue() - enemy.getStrength()));
-                    character.getHeldArmor().setArmorValue(0);
-                    character.setHealth(character.getHealth() - temp);
-                } else {
-                    character.getHeldArmor().setArmorValue(character.getHeldArmor().getValue() - enemy.getStrength());
-                }
-            } else {
-                character.setHealth(character.getHealth() - enemy.getStrength());
-            }
-            turn = 3;
-        }
-        else if (character == fighter && fighter.getIsDead() && !healer.getIsDead()) {
-            character = healer;
-            if (character.getHeldArmor().getArmorValue() >= 0) {
-                if (character.getHeldArmor().getArmorValue() - enemy.getStrength() < 0) {
-                    int temp = Math.abs((int) (character.getHeldArmor().getArmorValue() - enemy.getStrength()));
-                    character.getHeldArmor().setArmorValue(0);
-                    character.setHealth(character.getHealth() - temp);
-                } else {
-                    character.getHeldArmor().setArmorValue(character.getHeldArmor().getValue() - enemy.getStrength());
-                }
-            } else {
-                character.setHealth(character.getHealth() - enemy.getStrength());
-            }
-            turn = 3;
-        }
-        else if (character == healer && !healer.getIsDead()) {
-            if (character.getHeldArmor().getArmorValue() >= 0) {
-                if (character.getHeldArmor().getArmorValue() - enemy.getStrength() < 0) {
-                    int temp = Math.abs((int) (character.getHeldArmor().getArmorValue() - enemy.getStrength()));
-                    character.getHeldArmor().setArmorValue(0);
-                    character.setHealth(character.getHealth() - temp);
-                } else {
-                    character.getHeldArmor().setArmorValue(character.getHeldArmor().getValue() - enemy.getStrength());
-                }
-            } else {
-                character.setHealth(character.getHealth() - enemy.getStrength());
-            }
+            healer.CheckDead();
             turn = 3;
         }
     }
+
     public void turnCounter(){
         System.out.println("Turns left :" + turn);
     }
@@ -615,15 +648,20 @@ public class Initiliaze {
         System.out.println(welcomeUser);
         checkEnemies();
         while (running) {
-            System.out.println(askUser);
-            String start = scan.nextLine();
-            Input(start);
 
-        if(turn < 1){
-           // attackPlayer(,fighter);
-        }
-        }
+            if (turn > 0) {
+                System.out.println(askUser);
+                String start = scan.nextLine();
 
+                Input(start);
+            } else {
+                for (Character enemy : allEnemies.values()) {
+                    attackPlayer(enemy);
+                }
+
+            }
+
+        }
     }
     public void saveScore() {
         FileWriter writeFile = null;
