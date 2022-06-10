@@ -302,7 +302,7 @@ public class Initiliaze {
                 healer.Examine(item);
             turnCounter();
         }
-        if (inputEquals(words, specialAction)) {       //special action later to be changed
+        if (inputEquals(words,new String[]{"healer"}, specialAction)) {       //special action later to be changed
             Scanner scanner = new Scanner(System.in);
             if (healer.getHeldWeapon() instanceof Wand) {
                 System.out.println("Which character you want to heal?");
@@ -323,7 +323,13 @@ public class Initiliaze {
                 characters.get(index).setHealth(characters.get(index).getHealth() + heal);
                 System.out.println("Updated HP of " + characters.get(index).getCharClass() + " is " + characters.get(index).getHealth());
                 turn++;
+            }else if (healer.getHeldWeapon() instanceof Sword){
+
+            }else if(healer.getHeldWeapon() instanceof Shield){
+
+
             }
+
         }
         if (inputEquals(words, new String[]{"fighter"}, attack)) {
                 StringBuilder enemyName = new StringBuilder(words[2]);
