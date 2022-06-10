@@ -190,7 +190,7 @@ public class Character implements CharacterAttack{
                 this.weapon = weapon;
                 //no output because this will be internal
             }
-            default -> System.out.println("Please enter a valid char class"); //very intelligently designed exception to catch invalid class names
+            default -> System.out.println("Please enter a valid char class."); //very intelligently designed exception to catch invalid class names
         }
     }
 
