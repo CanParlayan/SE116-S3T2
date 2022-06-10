@@ -120,8 +120,9 @@ public class Initiliaze {
         allWeapons.putAll(allWands);
         allItems.putAll(allWeapons);
         allItems.putAll(allArmors);
-        Character enemy = new Character("Enemy", level1, EnemyRandomWeapon(),EnemyRandomArmor());
-        allEnemies.put("enemy", enemy);
+        //Character enemy = new Character("Enemy", level1, EnemyRandomWeapon(),EnemyRandomArmor());
+        enemySpawner(1,allEnemies);
+        //allEnemies.put("enemy", enemy);
     }
 
     private void gameStart() {
@@ -136,9 +137,14 @@ public class Initiliaze {
         level1.AddToLevelDrops(mithrilSword);
 
     }
-/*
-    public static void enemySpawner //aykan'ın kodu kullanılacak
-    }*/
+
+    public static void enemySpawner(int power, HashMap<String,Character> enemyMap){ //aykan'ın kodu kullanılacak
+        for(int spctr = 0; spctr < Math.pow(2,power); spctr++){
+            String newEnemy = "Enemy" + spctr;
+            System.out.println(newEnemy);
+            enemyMap.put(newEnemy, new Enemy(1,11,1,1,"sussy baka",EnemyRandomWeapon(),EnemyRandomArmor()));
+        }
+    }
 
     private void Input(String input) {
 
