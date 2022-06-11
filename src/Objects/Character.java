@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //This class will probably be abstracted from a top class that also abstracts the enemy class
-public class Character implements CharacterAttack{
+public class Character implements CharacterMethods{
     //Small initialization note, decided to handle random generation inside this class and not expose it
     SecureRandom rng = new SecureRandom();
     private Weapon weapon;

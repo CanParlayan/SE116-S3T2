@@ -52,37 +52,4 @@ public class Enemy extends Character{
      //   System.out.println("Enemy created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence + " HP: " + this.hp);
     }
 
-    void Attack(Character character){
-        character.setHealth(character.getHealth()-getStrength());
-    }
-
-    Item dropRandomItem(){
-        int randomizer = random.nextInt(3);
-        Weapon lootWeapon = new Weapon(null,null,0,0,null,0);
-        if(randomizer == 0){
-            Material lootMaterial = new Material(random.nextInt(5),"steel",random.nextInt(5));
-            Weapon temp = new Weapon(lootMaterial,"Forgotten weapon",10,3,"sword",10);
-            lootWeapon = temp;
-        }
-        else if(randomizer == 1){
-            Material lootMaterial2 = new Material(random.nextInt(6),"crystal",random.nextInt(6));
-            Weapon temp2 = new Weapon(lootMaterial2,"Forbidden weapon",12,5,"sword",12);
-            lootWeapon = temp2;
-        }
-        else if(randomizer == 2){
-            Material lootMaterial3 = new Material(random.nextInt(7),"mithril",random.nextInt(7));
-            Weapon temp3 = new Weapon(lootMaterial3,"Forsaken weapon",14,7,"sword",14);
-            lootWeapon = temp3;
-        }
-        return lootWeapon;
-    }
-
-    void printInfo(){
-        System.out.println("vitality:"+getVitality());
-        System.out.println("strength:"+getStrength());
-        System.out.println("intelligence:"+getIntelligence());
-        System.out.println("hp:"+getHp());
-        System.out.println("---------------");
-    }
-
 }
