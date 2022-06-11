@@ -164,129 +164,189 @@ public class Initiliaze {
             return;
         }
         if (inputEquals(words, new String[]{"tank"}, new String[]{"throw"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
-                turn--;
-            }
-            Item item = allItems.get(itemName.toString());
-            if (item != null)
-                tank.Throw(item);
+           if(!tank.getIsDead()){
+               StringBuilder itemName = new StringBuilder(words[2]);
+               for (int i = 3; i < words.length; i++) {
+                   itemName.append(" ").append(words[i]);
+                   turn--;
+               }
+               Item item = allItems.get(itemName.toString());
+               if (item != null)
+                   tank.Throw(item);
+           }
+           else{
+               System.out.println(tank.getCharClass()+" is dead. This can not be done");
+           }
         } else if (inputEquals(words, new String[]{"healer"}, new String[]{"throw"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
+            if(!healer.getIsDead()){
+                StringBuilder itemName = new StringBuilder(words[2]);
+                for (int i = 3; i < words.length; i++) {
+                    itemName.append(" ").append(words[i]);
+                }
+                turn--;
+                Item item = allItems.get(itemName.toString());
+                if (item != null)
+                    healer.Throw(item);
             }
-            turn--;
-            Item item = allItems.get(itemName.toString());
-            if (item != null)
-                healer.Throw(item);
+            else{
+                System.out.println(healer.getCharClass()+" is dead. This can not be done");
+            }
             turnCounter();
         } else if (inputEquals(words, new String[]{"fighter"}, new String[]{"throw"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
+            if(!fighter.getIsDead()){
+                StringBuilder itemName = new StringBuilder(words[2]);
+                for (int i = 3; i < words.length; i++) {
+                    itemName.append(" ").append(words[i]);
+                }
+                turn--;
+                Item item = allItems.get(itemName.toString());
+                if (item != null)
+                    fighter.Throw(item);
             }
-            turn--;
-            Item item = allItems.get(itemName.toString());
-            if (item != null)
-                fighter.Throw(item);
+            else{
+                System.out.println(fighter.getCharClass()+" is dead. This can not be done");
+            }
             turnCounter();
         }
         if (inputEquals(words, new String[]{"tank"}, new String[]{"pick"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
+            if(!tank.getIsDead()){
+                StringBuilder itemName = new StringBuilder(words[2]);
+                for (int i = 3; i < words.length; i++) {
+                    itemName.append(" ").append(words[i]);
+                }
+                turn--;
+                Item item = allItems.get(itemName.toString());
+                if (item != null)
+                    tank.Pick(item);
+                level1.RemoveFromLevelDrops(item);
             }
-            turn--;
-            Item item = allItems.get(itemName.toString());
-            if (item != null)
-                tank.Pick(item);
-            level1.RemoveFromLevelDrops(item);
+            else{
+                System.out.println(tank.getCharClass()+" is dead. This can not be done");
+            }
             turnCounter();
         } else if (inputEquals(words, new String[]{"fighter"}, new String[]{"pick"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
+            if(!fighter.getIsDead()){
+                StringBuilder itemName = new StringBuilder(words[2]);
+                for (int i = 3; i < words.length; i++) {
+                    itemName.append(" ").append(words[i]);
+                }
+                turn--;
+                Item item = allItems.get(itemName.toString());
+                if (item != null)
+                    fighter.Pick(item);
+                level1.RemoveFromLevelDrops(item);
             }
-            turn--;
-            Item item = allItems.get(itemName.toString());
-            if (item != null)
-                fighter.Pick(item);
-            level1.RemoveFromLevelDrops(item);
+            else{
+                System.out.println(fighter.getCharClass()+" is dead. This can not be done");
+            }
             turnCounter();
         } else if (inputEquals(words, new String[]{"healer"}, new String[]{"pick"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
+            if(!healer.getIsDead()){
+                StringBuilder itemName = new StringBuilder(words[2]);
+                for (int i = 3; i < words.length; i++) {
+                    itemName.append(" ").append(words[i]);
+                }
+                turn--;
+                Item item = allItems.get(itemName.toString());
+                if (item != null)
+                    healer.Pick(item);
+                level1.RemoveFromLevelDrops(item);
             }
-            turn--;
-            Item item = allItems.get(itemName.toString());
-            if (item != null)
-                healer.Pick(item);
-            level1.RemoveFromLevelDrops(item);
+            else{
+                System.out.println(healer.getCharClass()+" is dead. This can not be done");
+            }
             turnCounter();
         }
         if (inputEquals(words, new String[]{"tank"}, new String[]{"wear"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
+            if(!tank.getIsDead()){
+                StringBuilder itemName = new StringBuilder(words[2]);
+                for (int i = 3; i < words.length; i++) {
+                    itemName.append(" ").append(words[i]);
+                }
+                turn--;
+                Armor item = allArmors.get(itemName.toString());
+                if (item != null)
+                    tank.Wear(item);
             }
-            turn--;
-            Armor item = allArmors.get(itemName.toString());
-            if (item != null)
-                tank.Wear(item);
+            else {
+                System.out.println(tank.getCharClass()+" is dead. This can not be done");
+            }
             turnCounter();
         } else if (inputEquals(words, new String[]{"fighter"}, new String[]{"wear"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
+            if(!fighter.getIsDead()){
+                StringBuilder itemName = new StringBuilder(words[2]);
+                for (int i = 3; i < words.length; i++) {
+                    itemName.append(" ").append(words[i]);
+                }
+                turn--;
+                Armor item = allArmors.get(itemName.toString());
+                if (item != null)
+                    fighter.Wear(item);
             }
-            turn--;
-            Armor item = allArmors.get(itemName.toString());
-            if (item != null)
-                fighter.Wear(item);
+            else {
+                System.out.println(fighter.getCharClass()+" is dead. This can not be done");
+            }
             turnCounter();
         } else if (inputEquals(words, new String[]{"healer"}, new String[]{"wear"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
+            if(!healer.getIsDead()){
+                StringBuilder itemName = new StringBuilder(words[2]);
+                for (int i = 3; i < words.length; i++) {
+                    itemName.append(" ").append(words[i]);
+                }
+                turn--;
+                Armor item = allArmors.get(itemName.toString());
+                if (item != null)
+                    healer.Wear(item);
             }
-            turn--;
-            Armor item = allArmors.get(itemName.toString());
-            if (item != null)
-                healer.Wear(item);
+            else {
+                System.out.println(healer.getCharClass()+" is dead. This can not be done");
+            }
             turnCounter();
         }
         if (inputEquals(words, new String[]{"tank"}, new String[]{"wield"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
+            if(!tank.getIsDead()){
+                StringBuilder itemName = new StringBuilder(words[2]);
+                for (int i = 3; i < words.length; i++) {
+                    itemName.append(" ").append(words[i]);
+                }
+                turn--;
+                Weapon item = allWeapons.get(itemName.toString());
+                if (item != null)
+                    tank.Wield(item);
             }
-            turn--;
-            Weapon item = allWeapons.get(itemName.toString());
-            if (item != null)
-                tank.Wield(item);
+            else {
+                System.out.println(tank.getCharClass()+" is dead. This can not be done");
+            }
             turnCounter();
         } else if (inputEquals(words, new String[]{"healer"}, new String[]{"wield"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
+            if(!healer.getIsDead()){
+                StringBuilder itemName = new StringBuilder(words[2]);
+                for (int i = 3; i < words.length; i++) {
+                    itemName.append(" ").append(words[i]);
+                }
+                turn--;
+                Weapon item = allWeapons.get(itemName.toString());
+                if (item != null)
+                    healer.Wield(item);
             }
-            turn--;
-            Weapon item = allWeapons.get(itemName.toString());
-            if (item != null)
-                healer.Wield(item);
+            else {
+                System.out.println(healer.getCharClass()+" is dead. This can not be done");
+            }
             turnCounter();
         } else if (inputEquals(words, new String[]{"fighter"}, new String[]{"wield"})) {
-            StringBuilder itemName = new StringBuilder(words[2]);
-            for (int i = 3; i < words.length; i++) {
-                itemName.append(" ").append(words[i]);
+            if(!fighter.getIsDead()){
+                StringBuilder itemName = new StringBuilder(words[2]);
+                for (int i = 3; i < words.length; i++) {
+                    itemName.append(" ").append(words[i]);
+                }
+                turn--;
+                Weapon item = allWeapons.get(itemName.toString());
+                if (item != null)
+                    fighter.Wield(item);
             }
-            turn--;
-            Weapon item = allWeapons.get(itemName.toString());
-            if (item != null)
-                fighter.Wield(item);
+            else {
+                System.out.println(fighter.getCharClass()+" is dead. This can not be done");
+            }
             turnCounter();
         }
         if (inputEquals(words, openInventory)) {
@@ -302,11 +362,17 @@ public class Initiliaze {
             return;
         }
         if (inputEquals(words, new String[]{"fighter"}, displayStats)) {
-            fighter.DisplayStats();
+            if(!fighter.getIsDead()){
+                fighter.DisplayStats();
+            }
         } else if (inputEquals(words, new String[]{"healer"}, displayStats)) {
-            healer.DisplayStats();
+            if(!healer.getIsDead()){
+                healer.DisplayStats();
+            }
         } else if (inputEquals(words, new String[]{"tank"}, displayStats)) {
-            tank.DisplayStats();
+            if(!tank.getIsDead()){
+                tank.DisplayStats();
+            }
         }
         if (inputEquals(words, new String[]{"look"})) {
             System.out.println("Items on the ground:");
@@ -326,8 +392,12 @@ public class Initiliaze {
                 itemName.append(" ").append(words[i]);
             }
             Item item = allItems.get(itemName.toString());
-            if (item != null)
+            if (item != null) {
                 healer.Examine(item);
+        }
+            else{
+                System.out.println("There is no such item");
+            }
         }
             if (inputEquals(words, next)) {
                 if (allEnemies.size() < 1) {
@@ -696,6 +766,20 @@ public class Initiliaze {
 
     public void turnCounter() {
         System.out.println("Turns left :" + turn);
+    }
+
+    public int getValues(){
+        int score = 0;
+        for (Item item : fighter.getInventory()){
+            score += item.getValue();
+        }
+        for (Item item : tank.getInventory()){
+            score += item.getValue();
+        }
+        for (Item item : healer.getInventory()){
+            score += item.getValue();
+        }
+        return score;
     }
 
     public void run() {
