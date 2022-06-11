@@ -11,7 +11,7 @@ public class Shield extends Weapon {
             super(material,
                     Material.getName()+" Shield" ,
                     Material.getValueMultiplier()*3,
-                    11,
+                    4,
                     "Vitality",
                     5*Material.getDamageMultiplier());
         }

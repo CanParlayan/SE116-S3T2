@@ -11,7 +11,7 @@ public class Sword extends Weapon {
             super(material,
                     Material.getName()+" Sword" ,
                     Material.getValueMultiplier()*1.5,
-                    5,
+                    3,
                     "Strength",
                     (int) (0.5*Material.getDamageMultiplier()));
         }

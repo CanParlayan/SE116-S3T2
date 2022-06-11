@@ -9,7 +9,7 @@ public class FullPlate extends Armor {
         super(material,
                 Material.getName() + " Full Plate Armor",
                 Material.getValueMultiplier() * 9,
-                50.0,
+                5,
                 7);
     }
 }
