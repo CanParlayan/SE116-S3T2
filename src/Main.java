@@ -1,3 +1,4 @@
+import Objects.EmptyInputException;
 import Objects.Initialize;
 
 import java.io.IOException;
