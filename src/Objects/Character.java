@@ -1,9 +1,12 @@
 package Objects;
-import Items.*;
+
+import Items.Shield;
+import Items.Sword;
+import Items.Wand;
+
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 //This class will probably be abstracted from a top class that also abstracts the enemy class
 public class Character implements CharacterAttack{
@@ -20,10 +23,8 @@ public class Character implements CharacterAttack{
     private int vitality;
     private int health;
     private boolean stunned = false;
-    private int stunLength;
     private boolean isDead = false;
     private boolean isInvincible = false;
-    private int specialCooldown;
     private Level gameLevel; //will be used to access the level drops without exposing it public, no setter/getters, but a constructor parameter.
 
 
@@ -160,28 +161,24 @@ public class Character implements CharacterAttack{
         this.heldArmor = armor;
         switch (charClass) { //simplified switch clause
             case "Tank" -> {
-                this.strength = rng.nextInt(6)+1;
-                this.vitality = rng.nextInt(6)+6;
-                this.intelligence = rng.nextInt(6)+1;
+                this.strength = rng.nextInt(50)+1;
+                this.vitality = rng.nextInt(50)+6;
+                this.intelligence = rng.nextInt(40)+1;
                 this.health = Math.toIntExact(Math.round(this.vitality * 0.7 + this.strength * 0.2 + this.intelligence * 0.1));
-                //required because Math.round returns long
-                System.out.println("Tank created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence + " HP: " + this.health);
             }
             case "Fighter" -> {
-                this.strength = rng.nextInt(6)+6;
-                this.vitality = rng.nextInt(6)+3;
-                this.intelligence = rng.nextInt(6)+1;
+                this.strength = rng.nextInt(45)+6;
+                this.vitality = rng.nextInt(30)+3;
+                this.intelligence = rng.nextInt(30)+1;
                 this.weapon = weapon;
                 this.health = Math.toIntExact(Math.round(this.vitality * 0.7 + this.strength * 0.2 + this.intelligence * 0.1));
-                System.out.println("Fighter created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence+ " HP: " + this.health);
             }
             case "Healer" -> {
-                this.strength = rng.nextInt(6)+3;
-                this.vitality = rng.nextInt(6)+1;
-                this.intelligence = rng.nextInt(6)+6;
+                this.strength = rng.nextInt(40)+3;
+                this.vitality = rng.nextInt(40)+1;
+                this.intelligence = rng.nextInt(40)+6;
                 this.health = Math.toIntExact(Math.round(this.vitality * 0.7 + this.strength * 0.2 + this.intelligence * 0.1));
                 this.weapon = weapon;
-                System.out.println("Healer created with STR: " + this.strength + " VIT: " + this.vitality + " INT: " + this.intelligence + " HP: " + this.health);
             }
             case "Enemy" -> {
                 this.strength = rng.nextInt(6)+1;
@@ -189,23 +186,23 @@ public class Character implements CharacterAttack{
                 this.intelligence = rng.nextInt(6)+1;
                 this.health = Math.toIntExact(Math.round(this.vitality * 0.7 + this.strength * 0.2 + this.intelligence * 0.1));
                 this.weapon = weapon;
-                //no output because this will be internal
+
             }
-            default -> System.out.println("Please enter a valid char class."); //very intelligently designed exception to catch invalid class names
+            default -> System.out.println("Please enter a valid char class.");
         }
     }
 
     public int CalculateDamage(){
         if (heldWeapon instanceof Sword){
-            return (this.heldWeapon.getDamage()*this.strength);
+            return (this.heldWeapon.getDamage()+this.strength/5);
         }
         else if (heldWeapon instanceof Shield){
-            return (this.heldWeapon.getDamage()*this.vitality);
+            return (this.heldWeapon.getDamage()+this.vitality/5);
         }
         else if (heldWeapon instanceof Wand){
-            return (this.heldWeapon.getDamage()*this.intelligence);
+            return (this.heldWeapon.getDamage()+this.intelligence/5);
         }
-        else return this.strength; //unarmed attack
+        else return this.strength;
     }
 
     public void TakeDamage(int damage){
@@ -219,30 +216,26 @@ public class Character implements CharacterAttack{
 
         else if (heldArmor.getArmorValue() > 0){
             if (heldArmor.getArmorValue()-damage > 0){
-                heldArmor.setArmorValue((int) (heldArmor.getArmorValue()-damage));
+                heldArmor.setArmorValue( (heldArmor.getArmorValue()-damage));
                 System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage but all of it was blocked off by " + this.heldArmor.getItemName() + ".");
                 System.out.println("New armor durability: " + heldArmor.getArmorValue());
                 this.CheckDead();
             }
             else if (heldArmor.getArmorValue()-damage <= 0) {
-                int takenDamage = (int) Math.abs(this.heldArmor.getArmorValue() - damage);
+                int takenDamage = Math.abs(this.heldArmor.getArmorValue() - damage);
                 if (takenDamage == 0) {
                     System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage. Their " + heldArmor.getItemName() + " breaks while protecting them from the attack.");
                     this.heldArmor = null;
-                    this.CheckDead();
                 } else {
                     System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage. Their " + heldArmor.getItemName() + " breaks.");
                     System.out.println("They take an extra " + takenDamage + " damage that the armor couldn't block.");
                     this.heldArmor = null;
                     this.setHealth(this.getHealth() - takenDamage);
-                    if (this.getHealth() < 1) {
-                        this.CheckDead();
-                    }
-                    else{
+                    if (this.getHealth() >= 1) {
                         System.out.println("Their HP is now " + this.getHealth());
-                        this.CheckDead();
                     }
                 }
+                this.CheckDead();
             }
 
         }
@@ -260,33 +253,21 @@ public class Character implements CharacterAttack{
         return charClass;
     }
 
-    public void setCharClass(String charClass) {
-        this.charClass = charClass;
-    }
 
     public int getStrength() {
         return strength;
     }
 
-    public void setStrength(int strength) {
-        this.strength = strength;
-    }
 
     public int getIntelligence() {
         return intelligence;
     }
 
-    public void setIntelligence(int intelligence) {
-        this.intelligence = intelligence;
-    }
 
     public int getVitality() {
         return vitality;
     }
 
-    public void setVitality(int vitality) {
-        this.vitality = vitality;
-    }
 
     public Weapon getHeldWeapon() {
         return heldWeapon;
@@ -312,9 +293,6 @@ public class Character implements CharacterAttack{
         this.health = health;
     }
 
-    public void setStunLength(int stunLength) {
-        this.stunLength = stunLength;
-    }
 
     public void setIsDead(boolean isDead) {
         this.isDead = isDead;
@@ -324,24 +302,13 @@ public class Character implements CharacterAttack{
         return health;
     }
 
-    public int getStunLength() {
-        return stunLength;
-    }
 
     public boolean getIsDead() {
         return isDead;
     }
-
-    public int getSpecialCooldown() {
-        return specialCooldown;
-    }
-
-    public void setSpecialCooldown(int specialCooldown) {
-        this.specialCooldown = specialCooldown;
-    }
-    public static void Examine(Item item){ //wrap with InvalidItemException
+    public void Examine(Item item){ //wrap with InvalidItemException, also nonstatic because the paper implies so
         System.out.println("Item name: " + item.getItemName());
-        System.out.println("Item material: " + (item.getMaterial()).getName());
+        System.out.println("Item material: " + Material.getName());
         if(item instanceof Weapon) {
             System.out.println("Item class: Weapon");
             System.out.println("Weapon type: " + ((Weapon) item).getWeaponType()); //normally an unstable downcast, however protected by instanceof
@@ -388,7 +355,7 @@ public class Character implements CharacterAttack{
     }
     public void updateHP(double update){
         if(update + getHealth() > getMaxHP()){
-           setHealth((int) getMaxHP());
+           setHealth(getMaxHP());
         }
         else{
             setHealth((int) (getHealth()+update));

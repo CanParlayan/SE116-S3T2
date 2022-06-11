@@ -9,10 +9,6 @@ public class Armor extends Item{
         this.armorValue = armorValue;
     }
 
-    public Armor() {
-        super();
-    }
-
 
     public int getArmorValue() {
         return armorValue;
@@ -26,7 +22,4 @@ public class Armor extends Item{
         return armorType;
     }
 
-    public void setArmorType(String armorType) {
-        this.armorType = armorType;
-    }
 }
