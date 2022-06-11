@@ -87,10 +87,10 @@ public class Initiliaze {
             return allSwords.get(swordsAsList.get(random.nextInt(swordsAsList.size())));
         } else if (randomNumber < (swordDropChance + shieldDropChance)) {
             List<String> shieldsAsList = new ArrayList<>(allShields.keySet());
-            return allSwords.get(shieldsAsList.get(random.nextInt(shieldsAsList.size())));
+            return allShields.get(shieldsAsList.get(random.nextInt(shieldsAsList.size())));
         } else if (randomNumber <= (swordDropChance + shieldDropChance + wandDropChance)) {
             List<String> wandsAsList = new ArrayList<>(allWands.keySet());
-            return allSwords.get(wandsAsList.get(random.nextInt(wandsAsList.size())));
+            return allWands.get(wandsAsList.get(random.nextInt(wandsAsList.size())));
         }
         return null; //it drops nothing in the event above code fails to work
     }
