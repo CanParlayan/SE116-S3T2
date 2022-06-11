@@ -5,9 +5,9 @@ import Objects.Material;
 
 
 public class Chainmail extends Armor {
-    public Chainmail(Material material) {
+    public Chainmail(Material material,String itemName) {
         super(material,
-                Material.getName() + " Chainmail Armor",
+                itemName,
                 Material.getValueMultiplier() * 4.5,
                 3,
                 5);
