@@ -9,7 +9,7 @@ public class Padded extends Armor {
         super(material,
                 Material.getName() + " Padded Armor",
                 Material.getValueMultiplier() * 1.5,
-                20.0,
+                2,
                 3);
     }
     }

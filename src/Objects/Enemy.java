@@ -14,7 +14,7 @@ public class Enemy extends Character{
     SecureRandom random = new SecureRandom();
     static Level level = new Level();
     public Enemy(int strength, int vitality, int intelligence, int hp, String name,Weapon weapon, Armor armor) {
-        super("Enemy", level, weapon, armor);
+        super("enemy", level, weapon, armor);
     }
     public void setStrength(int strength) {
         this.strength = strength;
@@ -49,7 +49,7 @@ public class Enemy extends Character{
     }
 
     public Enemy(int strength, int vitality, int intelligence,int hp,Level gamelevel,Weapon weapon,Armor armor){
-        super("Enemy",gamelevel,weapon,armor);
+        super("enemy",gamelevel,weapon,armor);
         this.strength = strength;
         this.vitality = vitality;
         this.intelligence = intelligence;

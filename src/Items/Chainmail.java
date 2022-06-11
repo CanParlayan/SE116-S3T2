@@ -9,7 +9,7 @@ public class Chainmail extends Armor {
         super(material,
                 Material.getName() + " Chainmail Armor",
                 Material.getValueMultiplier() * 4.5,
-                30.0,
+                3,
                 5);
     }
 }
