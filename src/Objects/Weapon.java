@@ -11,7 +11,7 @@ public class Weapon extends Item{
                 weight);
         this.weaponType = weaponType;
         setDamage(damage);
-        setMaterial(material);
+        //setMaterial(material);
     }
 
     public void setDamage(int damage) {
@@ -25,9 +25,6 @@ public class Weapon extends Item{
     public void setWeaponType(String weaponType) {
         this.weaponType = weaponType;
     }
-    public void specialAction(){
-    }
-
     public int getDamage() {
         return damage;
     }

@@ -5,12 +5,11 @@ import Materials.Crystal;
 import Materials.Mithril;
 import Materials.Steel;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class Initialize {
+
 
     private static final String
             askUser = "> What do you want to do?";
@@ -22,7 +21,9 @@ public class Initialize {
     static Material mithril = new Mithril();
 
     Player player = new Player();
+    private int score = 0;
     public int highScore = 0;
+    String newHighScore;
     boolean running = true;
     Scanner scan = new Scanner(System.in);
     static Random rand = new Random(System.currentTimeMillis());
@@ -32,24 +33,24 @@ public class Initialize {
     int invincibleCooldown = 0;
 
 
-    static Weapon steelWand = new Wand(steel);
-    static Weapon crystalWand = new Wand(crystal);
-    static Weapon steelSword = new Sword(steel);
-    static Weapon mithrilWand = new Wand(mithril);
-    static Weapon mithrilShield = new Shield(mithril);
-    static Weapon mithrilSword = new Sword(mithril);
-    static Weapon crystalSword = new Sword(crystal);
-    static Weapon steelShield = new Shield(steel);
-    static Weapon crystalShield = new Shield(crystal);
-    static Armor crystalPadded = new Padded(crystal);
-    static Armor steelPadded = new Padded(steel);
-    static Armor mithrilPadded = new Padded(mithril);
-    static Armor crystalChainmail = new Chainmail(crystal);
-    static Armor steelChainmail = new Chainmail(steel);
-    static Armor mithrilChainmail = new Chainmail(mithril);
-    static Armor crystalFullPlate = new FullPlate(crystal);
-    static Armor steelFullPlate = new FullPlate(steel);
-    static Armor mithrilFullPlate = new FullPlate(mithril);
+    static Weapon steelWand = new Wand(steel,"Steel Wand");
+    static Weapon crystalWand = new Wand(crystal,"Crystal Wand");
+    static Weapon steelSword = new Sword(steel,"Steel Sword");
+    static Weapon mithrilWand = new Wand(mithril,"Mithril Wand");
+    static Weapon mithrilShield = new Shield(mithril,"Mithril Shield");
+    static Weapon mithrilSword = new Sword(mithril,"Mithril Sword");
+    static Weapon crystalSword = new Sword(crystal,"Crystal Sword");
+    static Weapon steelShield = new Shield(steel,"Steel Shield");
+    static Weapon crystalShield = new Shield(crystal,"Crystal Shield");
+    static Armor crystalPadded = new Padded(crystal,"Crystal Padded");
+    static Armor steelPadded = new Padded(steel,"Steel Padded");
+    static Armor mithrilPadded = new Padded(mithril,"Mithril Padded");
+    static Armor crystalChainmail = new Chainmail(crystal,"Crystal Chainmail");
+    static Armor steelChainmail = new Chainmail(steel,"Steel Chainmail");
+    static Armor mithrilChainmail = new Chainmail(mithril,"Mithril Chainmail");
+    static Armor crystalFullPlate = new FullPlate(crystal,"Crystal Full Plate");
+    static Armor steelFullPlate = new FullPlate(steel,"Steel Full Plate");
+    static Armor mithrilFullPlate = new FullPlate(mithril,"Mithril Full Plate");
     static Character tank = new Character("Tank", level1, steelShield, steelFullPlate);
     static Character healer = new Character("Healer", level1, steelWand, steelFullPlate);
     static Character fighter = new Character("Fighter", level1, steelSword, steelFullPlate);
@@ -131,8 +132,8 @@ public class Initialize {
         fighter.setHeldWeapon(mithrilSword);
         fighter.setHeldArmor(mithrilPadded);
         level1.AddToLevelDrops(steelFullPlate);
-        level1.AddToLevelDrops(crystalWand);
-        level1.AddToLevelDrops(crystalPadded);
+        level1.AddToLevelDrops(mithrilSword);
+        level1.AddToLevelDrops(crystalSword);
         level1.AddToLevelDrops(steelSword);
     }
 
@@ -225,11 +226,11 @@ public class Initialize {
             for (int i = 3; i < words.length; i++) {
                 itemName.append(" ").append(words[i]);
             }
-            turn--;
             Item item = allItems.get(itemName.toString());
             if (item != null)
                 fighter.Pick(item);
             level1.RemoveFromLevelDrops(item);
+            turn--;
         }
         else{
             System.out.println(fighter.getCharClass()+" is dead. This can not be done");
@@ -377,6 +378,14 @@ public class Initialize {
                 } else {
                     System.out.println(item.getItemName());
                 }
+        }
+        if (inputEquals(words,new String[]{"gamemode1"})) {
+            System.out.println("You have tried to sleep in nether");
+            System.out.println("You have fallen from the void");
+            System.out.println("You have vented electrical");
+            System.out.println("You have tried to swim in lava");
+            System.out.println("/noclip ");
+            commitSuicide();
         }
         if (inputEquals(words, new String[]{"enemies"})){
             checkEnemies();
@@ -765,16 +774,22 @@ public class Initialize {
     public void turnCounter() {
         System.out.println("Turns left :" + turn);
     }
+    public void commitSuicide(){
+        tank.setIsDead(true);
+        fighter.setIsDead(true);
+        healer.setIsDead(true);
+    }
 
-    public void run() throws InterruptedException {
+    public void run() throws InterruptedException, IOException {
 
         //reader.close(); do not forgot
         initializeObjects();
         gameStart();
         System.out.println("Welcome " + player.getName());
         Intro.OpeningText();
+        loadHighscore();
         while (running) {
-            if (tank.isDead() && healer.isDead() && fighter.isDead()) {
+            if (tank.getIsDead() && healer.getIsDead() && fighter.getIsDead()) {
                 running = false;
                 getValues();
                 saveScore();
@@ -821,35 +836,47 @@ public class Initialize {
             }
         }
     }
-    public int getValues(){
+    public void getValues(){
         for (Item item : fighter.getInventory()){
-            highScore += item.getValue();
+            score += item.getValue();
+            score += fighter.getHeldWeapon().getValue();
+            score += fighter.getHeldArmor().getValue();
         }
         for (Item item : tank.getInventory()){
-            highScore += item.getValue();
+            score += item.getValue();
+            score += tank.getHeldWeapon().getValue();
+            score += tank.getHeldArmor().getValue();
         }
         for (Item item : healer.getInventory()){
-            highScore += item.getValue();
+            score += item.getValue();
+            score += healer.getHeldWeapon().getValue();
+            score += healer.getHeldArmor().getValue();
         }
-        return highScore;
     }
-
-    public void saveScore() {
-        FileWriter writeFile = null;
+    private void saveScore(){
         BufferedWriter writer = null;
         try {
-            writeFile = new FileWriter("highscore.txt");
-            writer = new BufferedWriter(writeFile);
-            writer.write(highScore);
+            writer = new BufferedWriter(new FileWriter("highscore.txt", false));
+            writer.write("" + player.getName() +":  " + score);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error while saving highscore");
+        }
+    }
+    private void loadHighscore(){
+        BufferedReader br = null;
+        String line = "";
+        try {
+            br = new BufferedReader(new FileReader("highscore.txt"));
+            line = br.readLine();
+            br.close();
+        } catch (IOException e) {
+            line = "";
+        }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if(line != ""){
+            newHighScore = ("Highscore: " + highScore);
         }
     }
 }

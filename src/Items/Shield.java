@@ -4,9 +4,9 @@ import Objects.Material;
 import Objects.Weapon;
 
 public class Shield extends Weapon {
-        public Shield(Material material) {
+        public Shield(Material material,String itemName) {
             super(material,
-                    Material.getName()+" Shield" ,
+                    itemName ,
                     Material.getValueMultiplier()*3,
                     4,
                     "Vitality",

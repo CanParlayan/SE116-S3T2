@@ -7,9 +7,9 @@ import Objects.Weapon;
 
 
 public class Wand extends Weapon {
-    public Wand(Material material) {
+    public Wand(Material material,String itemName) {
         super(material,
-                Material.getName()+" Wand",
+                itemName,
                 Material.getValueMultiplier()*5,
                 3,
                 "Intelligence",
