@@ -1,3 +1,4 @@
+import Objects.EmptyInputException;
 import Objects.Initiliaze;
 
 public class Main {

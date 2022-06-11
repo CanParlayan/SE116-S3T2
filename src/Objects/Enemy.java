@@ -13,8 +13,8 @@ public class Enemy extends Character{
 
     SecureRandom random = new SecureRandom();
     static Level level = new Level();
-    public Enemy(int strength, int vitality, int intelligence, int hp, String name,Weapon weapon, Armor armor) {
-        super("enemy", level, weapon, armor);
+    public Enemy(String name,Weapon weapon, Armor armor) {
+        super("Enemy", level, weapon, armor);
     }
     public void setStrength(int strength) {
         this.strength = strength;

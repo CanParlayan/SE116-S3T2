@@ -6,9 +6,9 @@ public class Player {
     private String name;
     private int score;
     Scanner input = new Scanner(System.in);
-    public Player() {
-        System.out.println("Please enter your name.");
-        setName(input.next());
+    public Player(){
+        System.out.println("Please enter your name. Without spaces");
+        setName(input.nextLine());
     }
 
     public void setName(String name) {
@@ -17,7 +17,8 @@ public class Player {
 
     public String getName() {
         String temp1 = name.substring(0,1).toUpperCase();
-        String temp2 = name.substring(1,name.length()).toLowerCase();
+        int length = name.length();
+        String temp2 = name.substring(1,length).toLowerCase();
         return temp1.concat(temp2);
     }
 
