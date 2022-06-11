@@ -130,10 +130,10 @@ public class Initialize {
         healer.setHeldArmor(mithrilPadded);
         fighter.setHeldWeapon(mithrilSword);
         fighter.setHeldArmor(mithrilPadded);
-        level1.AddToLevelDrops(mithrilPadded);
-        level1.AddToLevelDrops(mithrilSword);
-        level1.AddToLevelDrops(mithrilShield);
-        level1.AddToLevelDrops(mithrilWand);
+        level1.AddToLevelDrops(steelFullPlate);
+        level1.AddToLevelDrops(crystalWand);
+        level1.AddToLevelDrops(crystalPadded);
+        level1.AddToLevelDrops(steelSword);
     }
 
     public static void enemySpawner(int power, HashMap<String, Character> enemyMap) {
@@ -774,58 +774,64 @@ public class Initialize {
         System.out.println("Welcome " + player.getName());
         Intro.OpeningText();
         while (running) {
-            if (allEnemies.size() == 0) {
-                turn = 500;
-                System.out.println("All enemies are dead you can skip to the next level");
-                level1.AddToLevelDrops(EnemyRandomArmor());
-                System.out.println("You've stumbled upon an item or was it there all the time?");
-                System.out.println(askUser);
-                String start = scan.nextLine();
-                Input(start);
+            if (tank.isDead() && healer.isDead() && fighter.isDead()) {
+                running = false;
+                getValues();
+                saveScore();
+                Intro.Credits();
             } else {
-                if (turn > 0) {
-                    System.out.println("It's your turn " + player.getName() + ".");
+                if (allEnemies.size() == 0) {
+                    turn = 500;
+                    System.out.println("All enemies are dead you can skip to the next level");
+                    level1.AddToLevelDrops(EnemyRandomArmor());
+                    System.out.println("You've stumbled upon an item or was it there all the time?");
                     System.out.println(askUser);
                     String start = scan.nextLine();
                     Input(start);
                 } else {
-                    System.out.println("Enemy's turn");
-                    Thread.sleep(1000);
-                    List<String> enemiesAsList = new ArrayList<>(allEnemies.keySet());
-                    for (String enemy : enemiesAsList) {
-                        attackPlayer(allEnemies.get(enemy));
-                    }
+                    if (turn > 0) {
+                        System.out.println("It's your turn " + player.getName() + ".");
+                        System.out.println(askUser);
+                        String start = scan.nextLine();
+                        Input(start);
+                    } else {
+                        System.out.println("Enemy's turn");
+                        Thread.sleep(1000);
+                        List<String> enemiesAsList = new ArrayList<>(allEnemies.keySet());
+                        for (String enemy : enemiesAsList) {
+                            attackPlayer(allEnemies.get(enemy));
+                        }
 
-                    fighter.setInvincible(false);
-                    tank.setInvincible(false);
-                    healer.setInvincible(false);
-                    stunCooldown--;
-                    invincibleCooldown--;
-                    if (invincibleCooldown < 0) {
-                        invincibleCooldown = 0;
-                    }
-                    if (stunCooldown < 0) {
-                        stunCooldown = 0;
-                    }
-                    for (String enemy : enemiesAsList) {
-                        allEnemies.get(enemy).setStunned(false);
+                        fighter.setInvincible(false);
+                        tank.setInvincible(false);
+                        healer.setInvincible(false);
+                        stunCooldown--;
+                        invincibleCooldown--;
+                        if (invincibleCooldown < 0) {
+                            invincibleCooldown = 0;
+                        }
+                        if (stunCooldown < 0) {
+                            stunCooldown = 0;
+                        }
+                        for (String enemy : enemiesAsList) {
+                            allEnemies.get(enemy).setStunned(false);
+                        }
                     }
                 }
             }
         }
     }
     public int getValues(){
-        int score = 0;
         for (Item item : fighter.getInventory()){
-            score += item.getValue();
+            highScore += item.getValue();
         }
         for (Item item : tank.getInventory()){
-            score += item.getValue();
+            highScore += item.getValue();
         }
         for (Item item : healer.getInventory()){
-            score += item.getValue();
+            highScore += item.getValue();
         }
-        return score;
+        return highScore;
     }
 
     public void saveScore() {
