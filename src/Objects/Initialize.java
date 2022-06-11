@@ -21,9 +21,6 @@ public class Initialize {
     static Material mithril = new Mithril();
 
     Player player = new Player();
-    private int score = 0;
-    public int highScore = 0;
-    String newHighScore;
     boolean running = true;
     Scanner scan = new Scanner(System.in);
     static Random rand = new Random(System.currentTimeMillis());
@@ -787,12 +784,11 @@ public class Initialize {
         gameStart();
         System.out.println("Welcome " + player.getName());
         Intro.OpeningText();
-        loadHighscore();
+        System.out.println("Highest score: "+ loadScore());
         while (running) {
             if (tank.getIsDead() && healer.getIsDead() && fighter.getIsDead()) {
                 running = false;
-                getValues();
-                saveScore();
+                saveScore(getValues());
                 Intro.Credits();
             } else {
                 if (allEnemies.size() == 0) {
@@ -836,47 +832,59 @@ public class Initialize {
             }
         }
     }
-    public void getValues(){
+    public static int getValues(){
+        int valuescore = 0;
         for (Item item : fighter.getInventory()){
-            score += item.getValue();
-            score += fighter.getHeldWeapon().getValue();
-            score += fighter.getHeldArmor().getValue();
+            valuescore += item.getValue();
         }
+        valuescore += fighter.getHeldWeapon().getValue();
+        valuescore += fighter.getHeldArmor().getValue();
         for (Item item : tank.getInventory()){
-            score += item.getValue();
-            score += tank.getHeldWeapon().getValue();
-            score += tank.getHeldArmor().getValue();
+            valuescore += item.getValue();
         }
+        valuescore += tank.getHeldWeapon().getValue();
+        valuescore += tank.getHeldArmor().getValue();
         for (Item item : healer.getInventory()){
-            score += item.getValue();
-            score += healer.getHeldWeapon().getValue();
-            score += healer.getHeldArmor().getValue();
+            valuescore += item.getValue();
         }
+        valuescore += healer.getHeldWeapon().getValue();
+        valuescore += healer.getHeldArmor().getValue();
+        return valuescore;
     }
-    private void saveScore(){
+    private static void saveScore(int highscore){
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new FileWriter("highscore.txt", false));
-            writer.write("" + player.getName() +":  " + score);
+            writer = new BufferedWriter(new FileWriter("highscore.txt", true));
+            writer.write(highscore + "\n");
             writer.flush();
             writer.close();
         } catch (IOException e) {
             System.out.println("Error while saving highscore");
         }
     }
-    private void loadHighscore(){
+    private int loadScore(){
         BufferedReader br = null;
         String line = "";
+        int highscore = 0;
         try {
             br = new BufferedReader(new FileReader("highscore.txt"));
-            line = br.readLine();
+            ArrayList<Integer> scores = new ArrayList<>();
+            while((line = br.readLine()) != null){
+                scores.add(Integer.parseInt(line));
+            }
+            for(Integer score : scores){
+                if(highscore < score) highscore = score;
+            }
             br.close();
         } catch (IOException e) {
             line = "";
+        } catch (NumberFormatException e) {
+            line = ""; //returns empty if things fail
         }
 
         if(line != ""){
-            newHighScore = ("Highscore: " + highScore);
+           return highscore;
         }
+        return 0;
     }
 }
