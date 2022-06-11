@@ -74,6 +74,7 @@ public class Initiliaze {
     public static HashMap<String, Weapon> allShields = new HashMap<>();
     public static HashMap<String, Weapon> allWands = new HashMap<>();
     public static HashMap<String, Character> allEnemies = new HashMap<>();
+    public int n = 1;
 
     public static Weapon EnemyRandomWeapon(){ //probably very unbalanced gameplay wise because every material gets the same weight, but well, adds randomness into runs
         Random random = new Random();
@@ -123,7 +124,7 @@ public class Initiliaze {
         allWeapons.putAll(allWands);
         allItems.putAll(allWeapons);
         allItems.putAll(allArmors);
-        enemySpawner(1, allEnemies);
+        enemySpawner(n, allEnemies);
     }
 
     private void gameStart() {
@@ -141,11 +142,10 @@ public class Initiliaze {
 
     }
 
-    public static void enemySpawner(int power, HashMap<String, Character> enemyMap) { //aykan'ın kodu kullanılacak
+    public static void enemySpawner(int power, HashMap<String, Character> enemyMap) {
         for (int spctr = 0; spctr < Math.pow(2, power); spctr++) {
-            String newEnemy = "Enemy" + spctr;
-            System.out.println(newEnemy);
-            enemyMap.put(newEnemy, new Enemy(1, 11, 1, 1, "sussy baka", EnemyRandomWeapon(), EnemyRandomArmor()));
+            String newEnemy = "enemy" + spctr;
+            enemyMap.put(newEnemy, new Enemy("Enemy", EnemyRandomWeapon(), EnemyRandomArmor()));
         }
     }
 
@@ -317,6 +317,9 @@ public class Initiliaze {
                     System.out.println(item.getItemName());
                 }
         }
+        if (inputEquals(words, new String[]{"enemies"})){
+            checkEnemies();
+        }
         if (inputEquals(words, examine)) {
             StringBuilder itemName = new StringBuilder(words[1]);
             for (int i = 2; i < words.length; i++) {
@@ -326,9 +329,19 @@ public class Initiliaze {
             if (item != null)
                 healer.Examine(item);
         }
-        if (inputEquals(words,next)) {
-           // next methodu
-        }
+            if (inputEquals(words, next)) {
+                if (allEnemies.size() < 1) {
+                    System.out.println("You are heading to the level " +n);
+                    n++;
+                    enemySpawner(n, allEnemies);
+                    fighter.setHealth(fighter.getMaxHP());
+                    tank.setHealth(tank.getMaxHP());
+                    healer.setHealth(healer.getMaxHP());
+                    checkEnemies();
+                } else{
+                    System.out.println("Not all enemies are dead.");
+                }
+            }
         if (inputEquals(words, new String[]{"healer"}, specialAction)) {       //special action later to be changed
             Scanner scanner = new Scanner(System.in);
             if (healer.getHeldWeapon() instanceof Wand) {
@@ -478,7 +491,7 @@ public class Initiliaze {
                     }
                     System.out.println("Which enemy you want to stun?");
                     String enemyName = scanner.nextLine();
-                    Character enemy = allEnemies.get(enemyName);
+                    Character enemy = allEnemies.get(enemyName.toString());
                     if (enemy != null) {
                         enemy.setStunned(true);
                         System.out.println(tank.getCharClass() + " has now stunned the enemy");
@@ -500,19 +513,13 @@ public class Initiliaze {
             if (enemy != null) {
                 int fighterDamage = fighter.CalculateDamage();
                 enemy.TakeDamage(fighterDamage);
-                if (enemy.getHealth() > 0) {
-                    System.out.println("Enemy's current HP: " + enemy.getHealth());
-                } else {
-                    System.out.print("");
-                }
-                if (enemy.getHeldArmor() == null) {
-                    System.out.println("");
-                } else {
-                    System.out.println("Enemy's current Armor: " + enemy.getHeldArmor().getArmorValue());
-                }
                 if (enemy.getIsDead()) {
-                    allEnemies.remove("enemy");
+                    level1.AddToLevelDrops(enemy.getHeldWeapon());
+                    System.out.println(allEnemies.remove(enemyName.toString()));
                 }
+            }
+            else {
+                System.out.println("No enemy around with the name " + enemyName);
             }
             turn--;
             turnCounter();
@@ -537,7 +544,8 @@ public class Initiliaze {
                     System.out.println("Enemy's current Armor: " + enemy.getHeldArmor().getArmorValue());
                 }
                 if (enemy.getIsDead()) {
-                    allEnemies.remove("enemy");
+                    level1.AddToLevelDrops(enemy.getHeldWeapon());
+                    System.out.println(allEnemies.remove(enemyName.toString()));
                 }
             }
             turn--;
@@ -563,7 +571,8 @@ public class Initiliaze {
                     System.out.println("Enemy's current Armor: " + enemy.getHeldArmor().getArmorValue());
                 }
                 if (enemy.getIsDead()) {
-                    allEnemies.remove("enemy");
+                    level1.AddToLevelDrops(enemy.getHeldWeapon());
+                    System.out.println(allEnemies.remove(enemyName.toString()));
                 }
             }
             turn--;
@@ -605,7 +614,7 @@ public class Initiliaze {
         if (allEnemies.size() < 1) //delete later
             System.out.println("No enemy around");
         else {
-            for (String i : allEnemies.keySet()) {
+            for (String i : allEnemies.keySet()) {         // Invalid char class
                 System.out.println("There is " + i);
             }
         }
@@ -675,11 +684,11 @@ public class Initiliaze {
             System.out.println(tank.getCharClass() + " died.");
             tank.setIsDead(true);
         }
-        if (healer.getHealth() < 0){
+        if (healer.getHealth() <= 0){
             System.out.println(healer.getCharClass() + " died.");
             healer.setIsDead(true);
         }
-        if (fighter.getHealth() < 0){
+        if (fighter.getHealth() <= 0){
             System.out.println(fighter.getCharClass() + " died.");
             fighter.setIsDead(true);
         }
@@ -694,21 +703,20 @@ public class Initiliaze {
         //reader.close(); do not forgot
         initializeObjects();
         gameStart();
-        System.out.println(welcomeUser);
         checkEnemies();
+        System.out.println(welcomeUser);
         while (running) {
-  //       fighter.setInvincible(false);
-  //      tank.setInvincible(false);           bunların bir yere koyulması lazım her tur sonunda sıfırlanıcak gibi
-  //       healer.setInvincible(false);
-  //       bir de enemylerin setStunned'ını falselamak gerekiyor
-            stunCooldown--;
-            invincibleCooldown--;
-            if (invincibleCooldown < 0) {
-                invincibleCooldown = 0;
+            if(allEnemies.size() == 0){      //enemy armor düşürme
+                Enemy enemy = new Enemy("Enemy",EnemyRandomWeapon(),EnemyRandomArmor());
+                enemy.setHealth(0);
+                enemy.dropRandomItem();
+
+                System.out.println("There appeared ");
+
             }
-            if (stunCooldown < 0) {
-                stunCooldown = 0;
-            }
+
+        // bir de enemylerin setStunned'ını falselamak gerekiyor
+
             if (turn > 0) {
                 System.out.println(askUser);
                 String start = scan.nextLine();
@@ -717,7 +725,17 @@ public class Initiliaze {
                 for (Character enemy : allEnemies.values()) {
                     attackPlayer(enemy);
                 }
-
+                fighter.setInvincible(false);
+                tank.setInvincible(false);
+                healer.setInvincible(false);
+                stunCooldown--;
+                invincibleCooldown--;
+                if (invincibleCooldown < 0) {
+                    invincibleCooldown = 0;
+                }
+                if (stunCooldown < 0) {
+                    stunCooldown = 0;
+                }
             }
 
         }

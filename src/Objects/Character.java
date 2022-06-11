@@ -3,6 +3,7 @@ import Items.*;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 //This class will probably be abstracted from a top class that also abstracts the enemy class
 public class Character implements CharacterAttack{
@@ -223,20 +224,24 @@ public class Character implements CharacterAttack{
                 System.out.println("New armor durability: " + heldArmor.getArmorValue());
                 this.CheckDead();
             }
-            else if (heldArmor.getArmorValue()-damage <= 0){
+            else if (heldArmor.getArmorValue()-damage <= 0) {
                 int takenDamage = (int) Math.abs(this.heldArmor.getArmorValue() - damage);
-                if(takenDamage == 0){
+                if (takenDamage == 0) {
                     System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage. Their " + heldArmor.getItemName() + " breaks while protecting them from the attack.");
                     this.heldArmor = null;
                     this.CheckDead();
-                }
-                else {
+                } else {
                     System.out.println("ATTACK: " + this.getCharClass() + " takes " + damage + " damage. Their " + heldArmor.getItemName() + " breaks.");
                     System.out.println("They take an extra " + takenDamage + " damage that the armor couldn't block.");
                     this.heldArmor = null;
-                    this.setHealth(this.getHealth()-takenDamage);
-                    System.out.println("Their HP is now " + this.getHealth());
-                    this.CheckDead();
+                    this.setHealth(this.getHealth() - takenDamage);
+                    if (this.getHealth() < 1) {
+                        this.CheckDead();
+                    }
+                    else{
+                        System.out.println("Their HP is now " + this.getHealth());
+                        this.CheckDead();
+                    }
                 }
             }
 
@@ -245,7 +250,8 @@ public class Character implements CharacterAttack{
     }
     public void CheckDead(){
         if (this.health <=0){
-            System.out.println("Oh no! " + this.getCharClass() + " is dead!");
+            int length = this.charClass.length();
+            System.out.println("Oh no! " + this.getCharClass().substring(0,1).toUpperCase()+this.getCharClass().substring(1,length) + " is dead!");
             this.isDead = true;
         }
     }
@@ -388,8 +394,8 @@ public class Character implements CharacterAttack{
             setHealth((int) (getHealth()+update));
         }
     }
-    public long getMaxHP() {
-        return Math.round(0.7*this.vitality + 0.2*this.strength + 0.1*this.intelligence);
+    public int getMaxHP() {
+        return (int) Math.round(0.7*this.vitality + 0.2*this.strength + 0.1*this.intelligence);
     }
 
     public boolean isInvincible() {
