@@ -56,7 +56,7 @@ public abstract class Intro {
         Thread.sleep(720);
         System.out.println("Aykan Berk Ayvazoğlu / Main Coder & System Designer");
         Thread.sleep(720);
-        System.out.println("Egemen Akgüner / Main Coder & General Designer ");
+        System.out.println("Egemen Akgüner / Coder & General Designer ");
         Thread.sleep(720);
         System.out.println("Halil Can Parlayan / Main Coder & Code Designer");
         Thread.sleep(720);
