@@ -1,9 +1,9 @@
 import Objects.EmptyInputException;
-import Objects.Initiliaze;
+import Objects.Initialize;
 
 public class Main {
-    public static void main(String[] args) {
-        Initiliaze initiliaze = new Initiliaze();
-        initiliaze.run();
+    public static void main(String[] args) throws InterruptedException {
+        Initialize initialize = new Initialize();
+        initialize.run();
         }
     }

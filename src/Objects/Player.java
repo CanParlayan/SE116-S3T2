@@ -7,7 +7,7 @@ public class Player {
     private int score;
     Scanner input = new Scanner(System.in);
     public Player(){
-        System.out.println("Please enter your name. Without spaces");
+        System.out.println("Please enter your name.");
         setName(input.nextLine());
     }
 

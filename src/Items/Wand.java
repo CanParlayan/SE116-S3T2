@@ -1,8 +1,6 @@
 package Items;
-import Objects.*;
-import Materials.Mithril;
+
 import Objects.Character;
-import Objects.CharacterAttack;
 import Objects.Material;
 import Objects.Weapon;
 
@@ -15,9 +13,9 @@ public class Wand extends Weapon {
                 Material.getValueMultiplier()*5,
                 3,
                 "Intelligence",
-                5*Material.getDamageMultiplier());
+                4*Material.getDamageMultiplier());
     }
     public double heal(Character character){
-        return Math.round(character.getIntelligence()/2);
+        return Math.round(character.getIntelligence()/1.5);
     }
 }
