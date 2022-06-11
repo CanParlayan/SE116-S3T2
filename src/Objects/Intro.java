@@ -46,4 +46,28 @@ public abstract class Intro {
                 look (Lets you check the ground for available items)
                 enemies (Lets you check the enemies on that level)""");
     }
+                                           
+    public static void Credits() throws IOException, InterruptedException {
+        System.out.println("Thank you for playing!");
+        Thread.sleep(720);
+        System.out.println("-----------------------------");
+        Thread.sleep(720);
+        System.out.println("Developers :");
+        Thread.sleep(720);
+        System.out.println("Aykan Berk Ayvazoğlu / Main Coder & System Designer");
+        Thread.sleep(720);
+        System.out.println("Egemen Akgüner / Coder & General Designer ");
+        Thread.sleep(720);
+        System.out.println("Halil Can Parlayan / Main Coder & Code Designer");
+        Thread.sleep(720);
+        System.out.println(" _______  _______  _        _        _______  _          _______  _______  ______   ______   _______  _______ \n" +
+                "(  ____ \\(  ___  )( (    /|( (    /|(  ___  )( (    /|  (  ____ \\(  ___  )(  __  \\ (  __  \\ (  ____ \\(  ____ )\n" +
+                "| (    \\/| (   ) ||  \\  ( ||  \\  ( || (   ) ||  \\  ( |  | (    \\/| (   ) || (  \\  )| (  \\  )| (    \\/| (    )|\n" +
+                "| |      | (___) ||   \\ | ||   \\ | || |   | ||   \\ | |  | (__    | |   | || |   ) || |   ) || (__    | (____)|\n" +
+                "| |      |  ___  || (\\ \\) || (\\ \\) || |   | || (\\ \\) |  |  __)   | |   | || |   | || |   | ||  __)   |     __)\n" +
+                "| |      | (   ) || | \\   || | \\   || |   | || | \\   |  | (      | |   | || |   ) || |   ) || (      | (\\ (   \n" +
+                "| (____/\\| )   ( || )  \\  || )  \\  || (___) || )  \\  |  | )      | (___) || (__/  )| (__/  )| (____/\\| ) \\ \\__\n" +
+                "(_______/|/     \\||/    )_)|/    )_)(_______)|/    )_)  |/       (_______)(______/ (______/ (_______/|/   \\__/");
+        System.out.println("2022-2022 SE 116 Games , All rights reserved ®");
+    }                                       
 }
